@@ -1,0 +1,208 @@
+Title: Whispers of A Minor - Main Harmony  
+Key: A minor  
+Time Signature: 4/4  
+Tempo: 80  
+
+Measure 1 1.0 C5 p quarter  
+Measure 1 2.0 D5 p quarter  
+Measure 1 3.0 C5 p quarter  
+Measure 1 4.0 B4 p quarter  
+
+Measure 2 1.0 A4 p quarter  
+Measure 2 2.0 B4 p quarter  
+Measure 2 3.0 A4 p quarter  
+Measure 2 4.0 G4 p quarter  
+
+Measure 3 1.0 F4 p half  
+Measure 3 3.0 E4 p quarter  
+Measure 3 4.0 D4 p quarter  
+
+Measure 4 1.0 C4 p dotted half  
+Measure 4 4.0 rest p quarter  
+
+Measure 5 1.0 E4 mf quarter  
+Measure 5 2.0 F4 mf quarter  
+Measure 5 3.0 G4 mf quarter  
+Measure 5 4.0 A4 mf quarter  
+
+Measure 6 1.0 B4 mf quarter  
+Measure 6 2.0 C5 mf quarter  
+Measure 6 3.0 B4 mf quarter  
+Measure 6 4.0 A4 mf quarter  
+
+Measure 7 1.0 G4 mf half  
+Measure 7 3.0 F4 mf quarter  
+Measure 7 4.0 E4 mf quarter  
+
+Measure 8 1.0 D4 mf dotted half  
+Measure 8 4.0 rest mf quarter  
+
+Measure 9 1.0 C5 p quarter  
+Measure 9 2.0 D5 p quarter  
+Measure 9 3.0 C5 p quarter  
+Measure 9 4.0 B4 p quarter  
+
+Measure 10 1.0 A4 p quarter  
+Measure 10 2.0 B4 p quarter  
+Measure 10 3.0 A4 p quarter  
+Measure 10 4.0 G4 p quarter  
+
+Measure 11 1.0 F4 p half  
+Measure 11 3.0 E4 p quarter  
+Measure 11 4.0 D4 p quarter  
+
+Measure 12 1.0 C4 p dotted half  
+Measure 12 4.0 rest p quarter  
+
+Measure 13 1.0 E4 mf quarter  
+Measure 13 2.0 F4 mf quarter  
+Measure 13 3.0 G4 mf quarter  
+Measure 13 4.0 A4 mf quarter  
+
+Measure 14 1.0 B4 mf quarter  
+Measure 14 2.0 C5 mf quarter  
+Measure 14 3.0 B4 mf quarter  
+Measure 14 4.0 A4 mf quarter  
+
+Measure 15 1.0 G4 mf half  
+Measure 15 3.0 F4 mf quarter  
+Measure 15 4.0 E4 mf quarter  
+
+Measure 16 1.0 D4 mf dotted half  
+Measure 16 4.0 rest mf quarter  
+
+Measure 17 1.0 [G4, C5] f quarter  
+Measure 17 2.0 [A4, D5] f quarter  
+Measure 17 3.0 [G4, C5] f quarter  
+Measure 17 4.0 [F4, B4] f quarter  
+
+Measure 18 1.0 E4 f half  
+Measure 18 3.0 [G4, B4] f quarter  
+Measure 18 4.0 [F4, A4] f quarter  
+
+Measure 19 1.0 E4 f quarter  
+Measure 19 2.0 F4 f eighth  
+Measure 19 2.5 G4 f eighth  
+Measure 19 3.0 A4 f quarter  
+Measure 19 4.0 B4 f quarter  
+
+Measure 20 1.0 C5 f dotted half  
+Measure 20 4.0 rest f quarter  
+
+Measure 21 1.0 [A4, D5] f quarter  
+Measure 21 2.0 [B4, E5] f quarter  
+Measure 21 3.0 [A4, D5] f quarter  
+Measure 21 4.0 [G4, C5] f quarter  
+
+Measure 22 1.0 B4 f half  
+Measure 22 3.0 A4 f quarter  
+Measure 22 4.0 G4 f quarter  
+
+Measure 23 1.0 F4 f quarter  
+Measure 23 2.0 E4 f eighth  
+Measure 23 2.5 D4 f eighth  
+Measure 23 3.0 C4 f quarter  
+Measure 23 4.0 B3 f quarter  
+
+Measure 24 1.0 A3 f dotted half  
+Measure 24 4.0 rest f quarter  
+
+Measure 25 1.0 [G4, C5] f quarter  
+Measure 25 2.0 [A4, D5] f quarter  
+Measure 25 3.0 [G4, C5] f quarter  
+Measure 25 4.0 [F4, B4] f quarter  
+
+Measure 26 1.0 E4 f half  
+Measure 26 3.0 [G4, B4] f quarter  
+Measure 26 4.0 [F4, A4] f quarter  
+
+Measure 27 1.0 E4 f quarter  
+Measure 27 2.0 F4 f eighth  
+Measure 27 2.5 G4 f eighth  
+Measure 27 3.0 A4 f quarter  
+Measure 27 4.0 B4 f quarter  
+
+Measure 28 1.0 C5 f dotted half  
+Measure 28 4.0 rest f quarter  
+
+Measure 29 1.0 [A4, D5] f quarter  
+Measure 29 2.0 [B4, E5] f quarter  
+Measure 29 3.0 [A4, D5] f quarter  
+Measure 29 4.0 [G4, C5] f quarter  
+
+Measure 30 1.0 B4 f half  
+Measure 30 3.0 A4 f quarter  
+Measure 30 4.0 G4 f quarter  
+
+Measure 31 1.0 F4 f quarter  
+Measure 31 2.0 E4 f eighth  
+Measure 31 2.5 D4 f eighth  
+Measure 31 3.0 C4 f quarter  
+Measure 31 4.0 B3 f quarter  
+
+Measure 32 1.0 A3 f dotted half  
+Measure 32 4.0 rest f quarter  
+
+Measure 33 1.0 C5 pp quarter  
+Measure 33 2.0 D5 pp quarter  
+Measure 33 3.0 C5 pp quarter  
+Measure 33 4.0 B4 pp quarter  
+
+Measure 34 1.0 A4 pp quarter  
+Measure 34 2.0 B4 pp quarter  
+Measure 34 3.0 A4 pp quarter  
+Measure 34 4.0 G4 pp quarter  
+
+Measure 35 1.0 F4 pp half  
+Measure 35 3.0 E4 pp quarter  
+Measure 35 4.0 D4 pp quarter  
+
+Measure 36 1.0 C4 pp whole  
+
+Measure 37 1.0 C5 pp quarter  
+Measure 37 2.0 D5 pp quarter  
+Measure 37 3.0 C5 pp quarter  
+Measure 37 4.0 B4 pp quarter  
+
+Measure 38 1.0 A4 pp quarter  
+Measure 38 2.0 B4 pp quarter  
+Measure 38 3.0 A4 pp quarter  
+Measure 38 4.0 G4 pp quarter  
+
+Measure 39 1.0 F4 pp half  
+Measure 39 3.0 E4 pp quarter  
+Measure 39 4.0 D4 pp quarter  
+
+Measure 40 1.0 C4 pp whole  
+
+Measure 41 1.0 C5 pp quarter  
+Measure 41 2.0 D5 pp quarter  
+Measure 41 3.0 C5 pp quarter  
+Measure 41 4.0 B4 pp quarter  
+
+Measure 42 1.0 A4 pp quarter  
+Measure 42 2.0 B4 pp quarter  
+Measure 42 3.0 A4 pp quarter  
+Measure 42 4.0 G4 pp quarter  
+
+Measure 43 1.0 F4 pp half  
+Measure 43 3.0 E4 pp quarter  
+Measure 43 4.0 D4 pp quarter  
+
+Measure 44 1.0 C4 pp whole  
+
+Measure 45 1.0 C5 pp quarter  
+Measure 45 2.0 D5 pp quarter  
+Measure 45 3.0 C5 pp quarter  
+Measure 45 4.0 B4 pp quarter  
+
+Measure 46 1.0 A4 pp quarter  
+Measure 46 2.0 B4 pp quarter  
+Measure 46 3.0 A4 pp quarter  
+Measure 46 4.0 G4 pp quarter  
+
+Measure 47 1.0 F4 pp half  
+Measure 47 3.0 E4 pp quarter  
+Measure 47 4.0 D4 pp quarter  
+
+Measure 48 1.0 [C4, E4] pp whole  
