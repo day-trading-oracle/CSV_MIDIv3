@@ -3,6 +3,216 @@ import os
 import re
 from pathlib import Path
 from datetime import datetime
+import random
+
+class MusicTheory:
+    """Music theory tools to ensure proper chord selection and progression"""
+    
+    def __init__(self):
+        # Major and minor scales (intervals from root)
+        self.scales = {
+            'major': [0, 2, 4, 5, 7, 9, 11],  # C, D, E, F, G, A, B
+            'minor': [0, 2, 3, 5, 7, 8, 10]   # C, D, Eb, F, G, Ab, Bb
+        }
+        
+        # Chord types by scale degree (for major keys)
+        # Using Roman numeral notation: I, ii, iii, IV, V, vi, vii°
+        self.major_degree_chords = {
+            0: 'major',      # I
+            1: 'minor',      # ii
+            2: 'minor',      # iii
+            3: 'major',      # IV
+            4: 'major',      # V
+            5: 'minor',      # vi
+            6: 'diminished'  # vii°
+        }
+        
+        # Chord types by scale degree (for minor keys)
+        # Using Roman numeral notation: i, ii°, III, iv, v, VI, VII
+        self.minor_degree_chords = {
+            0: 'minor',      # i
+            1: 'diminished', # ii°
+            2: 'major',      # III
+            3: 'minor',      # iv
+            4: 'minor',      # v (or major V in harmonic minor)
+            5: 'major',      # VI
+            6: 'major'       # VII
+        }
+        
+        # Chord intervals by chord type
+        self.chord_types = {
+            'major': [0, 4, 7],         # Root, major 3rd, perfect 5th
+            'minor': [0, 3, 7],         # Root, minor 3rd, perfect 5th
+            'diminished': [0, 3, 6],    # Root, minor 3rd, diminished 5th
+            'augmented': [0, 4, 8],     # Root, major 3rd, augmented 5th
+            'dominant7': [0, 4, 7, 10], # Root, major 3rd, perfect 5th, minor 7th
+            'major7': [0, 4, 7, 11],    # Root, major 3rd, perfect 5th, major 7th
+            'minor7': [0, 3, 7, 10]     # Root, minor 3rd, perfect 5th, minor 7th
+        }
+        
+        # Common chord progressions by scale degree (using index 0-6)
+        self.chord_progressions = {
+            'basic': [0, 4, 5, 0],      # I-V-vi-I
+            'pop': [0, 4, 5, 3],        # I-V-vi-IV
+            'classical': [0, 3, 4, 0],  # I-IV-V-I
+            'jazz': [1, 4, 0, 5],       # ii-V-I-vi
+            'blues': [0, 0, 0, 0, 3, 3, 0, 0, 4, 3, 0, 0]  # I-I-I-I-IV-IV-I-I-V-IV-I-I
+        }
+        
+        # Strong chord relationships - chords that sound good after each other
+        # Each chord can be followed by these scale degrees
+        self.chord_relationships = {
+            0: [1, 2, 3, 4, 5, 6],  # I can go to any
+            1: [0, 2, 4],           # ii often goes to V or I
+            2: [0, 3, 5],           # iii often goes to vi or IV
+            3: [0, 1, 4, 6],        # IV often goes to I or V
+            4: [0, 3, 5],           # V often goes to I
+            5: [1, 3, 4],           # vi often goes to ii or IV
+            6: [0]                  # vii° often goes to I
+        }
+    
+    def get_note_in_scale(self, note, key, scale_type='major'):
+        """Check if a note belongs to the given scale"""
+        # Normalize note and key to 0-11 range (C=0, B=11)
+        note_class = note % 12
+        key_class = key % 12
+        
+        # Get the scale intervals
+        scale_intervals = self.scales[scale_type]
+        
+        # Calculate the relative position of the note in the key's scale
+        for interval in scale_intervals:
+            if (key_class + interval) % 12 == note_class:
+                # Return the scale degree (0-6)
+                return scale_intervals.index(interval)
+        
+        return None  # Note is not in the scale
+    
+    def get_chord_for_note(self, note, key, scale_type='major'):
+        """Get appropriate chord for a note in the given key"""
+        # Find the scale degree of the note
+        scale_degree = self.get_note_in_scale(note, key, scale_type)
+        
+        # If note is not in scale, use the closest scale note
+        if scale_degree is None:
+            # Find the closest note in the scale
+            scale = [(key + interval) % 12 for interval in self.scales[scale_type]]
+            distances = [(note - scale_note) % 12 for scale_note in scale]
+            min_distance_index = distances.index(min(distances))
+            scale_degree = min_distance_index
+        
+        # Get the chord type for this scale degree
+        if scale_type == 'major':
+            chord_type = self.major_degree_chords[scale_degree]
+        else:
+            chord_type = self.minor_degree_chords[scale_degree]
+        
+        # Get the chord intervals
+        chord_intervals = self.chord_types[chord_type]
+        
+        # Calculate the root note of the chord based on scale degree
+        scale = self.scales[scale_type]
+        root_offset = scale[scale_degree]
+        root_note = (key + root_offset) % 12
+        
+        # Build the full chord
+        chord = [(root_note + interval) % 12 for interval in chord_intervals]
+        
+        return {
+            'root': root_note,
+            'type': chord_type,
+            'notes': chord,
+            'scale_degree': scale_degree
+        }
+    
+    def get_suitable_chord_progression(self, melody_notes, key, scale_type='major', measures=4):
+        """Generate a suitable chord progression for a melody"""
+        # Get the predominant notes at the start of each measure
+        measure_notes = []
+        current_measure = 0
+        
+        # Group notes by measure
+        for note in melody_notes:
+            measure = int(note['start'] // 4)
+            if measure >= len(measure_notes):
+                # Add empty lists for any skipped measures
+                while len(measure_notes) <= measure:
+                    measure_notes.append([])
+            
+            # Add the note to its measure
+            measure_notes[measure].append(note['pitch'] % 12)
+        
+        # Ensure we have enough measures
+        while len(measure_notes) < measures:
+            measure_notes.append([])
+        
+        # Get the most common note in each measure
+        representative_notes = []
+        for measure in measure_notes:
+            if not measure:
+                # Use the tonic if no notes in the measure
+                representative_notes.append(key % 12)
+                continue
+                
+            # Count occurrences of each note
+            note_counts = {}
+            for note in measure:
+                note_counts[note] = note_counts.get(note, 0) + 1
+            
+            # Get the most common note
+            most_common = max(note_counts, key=note_counts.get)
+            representative_notes.append(most_common)
+        
+        # Generate appropriate chords for each measure
+        chord_progression = []
+        prev_chord_degree = None
+        
+        for note in representative_notes:
+            # Get suitable chord
+            chord = self.get_chord_for_note(note, key, scale_type)
+            
+            # Check if we need to find a more suitable chord based on progression
+            if prev_chord_degree is not None:
+                # If current chord doesn't have a strong relationship with previous
+                if chord['scale_degree'] not in self.chord_relationships.get(prev_chord_degree, []):
+                    # Look for alternative chords that contain the note
+                    for degree in self.chord_relationships[prev_chord_degree]:
+                        alt_chord = self.get_chord_for_scale_degree(degree, key, scale_type)
+                        # Check if the melody note is in this chord
+                        if note % 12 in alt_chord['notes']:
+                            chord = alt_chord
+                            break
+            
+            chord_progression.append(chord)
+            prev_chord_degree = chord['scale_degree']
+        
+        return chord_progression
+    
+    def get_chord_for_scale_degree(self, degree, key, scale_type='major'):
+        """Get the chord for a specific scale degree in the given key"""
+        # Get the chord type for this scale degree
+        if scale_type == 'major':
+            chord_type = self.major_degree_chords[degree]
+        else:
+            chord_type = self.minor_degree_chords[degree]
+        
+        # Get the chord intervals
+        chord_intervals = self.chord_types[chord_type]
+        
+        # Calculate the root note of the chord based on scale degree
+        scale = self.scales[scale_type]
+        root_offset = scale[degree]
+        root_note = (key + root_offset) % 12
+        
+        # Build the full chord
+        chord = [(root_note + interval) % 12 for interval in chord_intervals]
+        
+        return {
+            'root': root_note,
+            'type': chord_type,
+            'notes': chord,
+            'scale_degree': degree
+        }
 
 class MIDIGenerator:
     def __init__(self):
@@ -48,20 +258,27 @@ class MIDIGenerator:
         """Convert dynamics string to velocity"""
         return self.dynamics_to_velocity.get(dynamics_str, 80)
 
-    def create_midi_file(self, song_data, output_path, tempo=120):
-        """Create a MIDI file from song data"""
+    def create_midi_file(self, song_data, output_path, tempo=120, enable_accompaniment=False, accompaniment_style='basic'):
+        """Create a MIDI file from song data with optional accompaniment"""
         try:
             print(f"\nCreating MIDI file: {output_path}")
             print(f"Tempo: {tempo}")
             print(f"Number of measures: {len(song_data['measures'])}")
+            print(f"Accompaniment: {'Enabled (' + accompaniment_style + ')' if enable_accompaniment else 'Disabled'}")
             
-            # Create a MIDI file with one track
-            midi = MIDIFile(1, adjust_origin=True)
+            # Determine number of tracks
+            num_tracks = 2 if enable_accompaniment else 1
             
-            # Set the tempo
+            # Create a MIDI file with one or two tracks
+            midi = MIDIFile(num_tracks, adjust_origin=True)
+            
+            # Set the tempo for all tracks
             midi.addTempo(0, 0, tempo)
+            if enable_accompaniment:
+                midi.addTempo(1, 0, tempo)
             
-            # Add notes to the track
+            # Track 0: Melody
+            # Add notes to the melody track
             current_time = 0
             total_notes = 0
             
@@ -151,6 +368,41 @@ class MIDIGenerator:
                 # Move to next measure
                 current_time += 4.0  # Assuming 4/4 time signature
             
+            # Track 1: Accompaniment (if enabled)
+            if enable_accompaniment:
+                print("\nGenerating accompaniment...")
+                
+                # Create accompaniment generator
+                accompaniment_gen = AccompanimentGenerator()
+                
+                # Generate accompaniment based on melody
+                accompaniment_data = accompaniment_gen.generate_accompaniment(song_data, style=accompaniment_style)
+                
+                # Add accompaniment notes to the track
+                current_time = 0
+                accompaniment_notes = 0
+                
+                for measure_num, measure in enumerate(accompaniment_data, 1):
+                    print(f"Processing accompaniment for measure {measure_num}")
+                    
+                    # Process each note in the accompaniment measure
+                    for note_data in measure:
+                        note_start = current_time + note_data['start']
+                        
+                        # Ensure all values are within valid MIDI ranges
+                        pitch_value = max(0, min(127, note_data['pitch']))
+                        velocity = max(0, min(127, note_data['velocity']))
+                        duration = max(0.1, note_data['duration'])
+                        
+                        midi.addNote(1, 0, pitch_value, note_start, duration, velocity)
+                        accompaniment_notes += 1
+                    
+                    # Move to next measure
+                    current_time += 4.0  # Assuming 4/4 time signature
+                
+                print(f"Added {accompaniment_notes} accompaniment notes")
+                total_notes += accompaniment_notes
+            
             # Write the MIDI file
             with open(output_path, "wb") as output_file:
                 midi.writeFile(output_file)
@@ -166,6 +418,243 @@ class MIDIGenerator:
             print("Traceback:")
             traceback.print_exc()
             return False
+
+class AccompanimentGenerator:
+    """Generates accompaniment patterns based on melody notes"""
+    
+    def __init__(self):
+        # Define common chord patterns in root position
+        self.chord_patterns = {
+            'basic': [0, 4, 7],         # Basic triad (1-3-5)
+            'seventh': [0, 4, 7, 10],   # Seventh chord (1-3-5-7)
+            'open': [0, 7, 12],         # Open fifth with octave (1-5-8)
+            'sus4': [0, 5, 7],          # Suspended 4th (1-4-5)
+            'add9': [0, 4, 7, 14]       # Add9 chord (1-3-5-9)
+        }
+        
+        # Common accompaniment patterns
+        self.rhythm_patterns = {
+            'whole': [[0.0, 4.0]],  # Single whole note
+            'half': [[0.0, 2.0], [2.0, 2.0]],  # Two half notes
+            'quarter': [[0.0, 1.0], [1.0, 1.0], [2.0, 1.0], [3.0, 1.0]],  # Four quarter notes
+            'waltz': [[0.0, 1.0], [1.0, 1.0], [2.0, 1.0], [3.0, 1.0]],  # Basic 4/4 waltz pattern
+            'arpeggio': [[0.0, 0.5], [0.5, 0.5], [1.0, 0.5], [1.5, 0.5], 
+                        [2.0, 0.5], [2.5, 0.5], [3.0, 0.5], [3.5, 0.5]],  # Eighth note arpeggio
+            'alberti': [[0.0, 0.5], [0.5, 0.5], [1.0, 0.5], [1.5, 0.5],
+                       [2.0, 0.5], [2.5, 0.5], [3.0, 0.5], [3.5, 0.5]]  # Alberti bass pattern
+        }
+        
+        # Map note names to scale degrees (for key detection)
+        self.note_to_degree = {
+            'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
+        }
+        
+        # Create music theory helper
+        self.music_theory = MusicTheory()
+    
+    def detect_key(self, song_data):
+        """Attempts to detect the key from the melody notes or metadata"""
+        # First check if key is specified in metadata
+        if 'key' in song_data and song_data['key']:
+            key_str = song_data['key'].strip()
+            # Extract just the note portion (ignoring major/minor)
+            key_match = re.match(r'([A-G][#b]?)\s*(major|minor|maj|min)?', key_str, re.IGNORECASE)
+            if key_match:
+                root_note = key_match.group(1)
+                # Convert key to MIDI note number (using C4 as reference)
+                if root_note in self.note_to_degree:
+                    return self.note_to_degree[root_note]
+        
+        # If no key specified, try to detect from notes
+        # This is a simple approach - count note occurrences and find the most common
+        notes = []
+        for measure in song_data['measures']:
+            for note_data in measure:
+                if isinstance(note_data, list):  # Chord
+                    for note in note_data:
+                        notes.append(note['pitch'] % 12)  # Use mod 12 to get pitch class
+                else:  # Single note
+                    notes.append(note_data['pitch'] % 12)
+        
+        if not notes:
+            return 0  # Default to C if no notes
+            
+        # Find most common note (simple heuristic for key detection)
+        note_counts = {}
+        for note in notes:
+            note_counts[note] = note_counts.get(note, 0) + 1
+        
+        # Return the most common note as the key
+        if note_counts:
+            return max(note_counts, key=note_counts.get)
+        return 0  # Default to C if no notes
+    
+    def detect_scale_type(self, song_data, key):
+        """Determines if the song is in a major or minor key"""
+        # Check if scale type is specified in metadata
+        if 'key' in song_data and song_data['key']:
+            key_str = song_data['key'].strip().lower()
+            if 'minor' in key_str or 'min' in key_str:
+                return 'minor'
+            else:
+                return 'major'  # Default to major if not specified
+        
+        # Count notes that match major vs minor scale
+        major_count = 0
+        minor_count = 0
+        
+        # Get all the notes from the song
+        all_notes = []
+        for measure in song_data['measures']:
+            for note_data in measure:
+                if isinstance(note_data, list):  # Chord
+                    for note in note_data:
+                        all_notes.append(note['pitch'] % 12)
+                else:  # Single note
+                    all_notes.append(note_data['pitch'] % 12)
+        
+        # Check how many notes fit in each scale
+        for note in all_notes:
+            # Check if note is in major scale
+            if self.music_theory.get_note_in_scale(note, key, 'major') is not None:
+                major_count += 1
+            
+            # Check if note is in minor scale
+            if self.music_theory.get_note_in_scale(note, key, 'minor') is not None:
+                minor_count += 1
+        
+        # Return the scale type that matches more notes
+        return 'minor' if minor_count > major_count else 'major'
+    
+    def generate_chord_progression(self, song_data, key, scale_type='major'):
+        """Generate a chord progression based on melody notes and music theory"""
+        # Flatten the measures into a single list of notes
+        all_notes = []
+        for measure in song_data['measures']:
+            for note_data in measure:
+                if isinstance(note_data, list):  # Chord
+                    for note in note_data:
+                        all_notes.append(note)
+                else:  # Single note
+                    all_notes.append(note_data)
+        
+        # Get a suitable chord progression from the music theory helper
+        return self.music_theory.get_suitable_chord_progression(
+            all_notes, 
+            key, 
+            scale_type, 
+            measures=len(song_data['measures'])
+        )
+    
+    def build_chord_notes(self, chord, octave=3):
+        """Convert a chord dictionary to MIDI note numbers in a specific octave"""
+        base_note = octave * 12
+        midi_notes = []
+        
+        for note in chord['notes']:
+            midi_notes.append(base_note + note)
+        
+        return midi_notes
+    
+    def generate_accompaniment(self, song_data, style='basic'):
+        """Generate accompaniment based on melody and chosen style"""
+        # Detect the song key and scale type
+        key = self.detect_key(song_data)
+        scale_type = self.detect_scale_type(song_data, key)
+        
+        print(f"Detected key: {key}, Scale type: {scale_type}")
+        
+        # Generate a chord progression
+        chord_progression = self.generate_chord_progression(song_data, key, scale_type)
+        
+        # Choose rhythm pattern based on style
+        if style == 'waltz':
+            rhythm = self.rhythm_patterns['waltz']
+        elif style == 'arpeggio':
+            rhythm = self.rhythm_patterns['arpeggio']
+        elif style == 'alberti':
+            rhythm = self.rhythm_patterns['alberti']
+        else:
+            rhythm = self.rhythm_patterns['quarter']
+        
+        # Generate accompaniment for each measure
+        accompaniment = []
+        
+        for measure_idx, measure in enumerate(song_data['measures']):
+            measure_notes = []
+            
+            # Skip empty measures
+            if not measure:
+                accompaniment.append([])
+                continue
+                
+            # Get the chord for this measure
+            if measure_idx < len(chord_progression):
+                chord = chord_progression[measure_idx]
+            else:
+                # If we don't have enough chords, repeat the last one or use I
+                chord = chord_progression[-1] if chord_progression else self.music_theory.get_chord_for_scale_degree(0, key, scale_type)
+            
+            # Convert chord to actual MIDI notes (in bass register)
+            # Start 2 octaves below middle C for bass
+            chord_notes = self.build_chord_notes(chord, octave=2)
+            
+            print(f"Measure {measure_idx+1}: Chord {chord['type']} (Scale degree: {chord['scale_degree']})")
+            
+            # Apply the rhythm pattern
+            for start, duration in rhythm:
+                # For arpeggio and alberti patterns, choose different chord notes
+                if style in ['arpeggio', 'alberti']:
+                    # For arpeggio, cycle through chord notes
+                    if style == 'arpeggio':
+                        if not chord_notes:
+                            continue
+                        index = int(start * 2) % len(chord_notes)
+                        pitch = chord_notes[index]
+                    # For alberti, use pattern: lowest, highest, middle, highest
+                    else:  # alberti
+                        if len(chord_notes) >= 3:
+                            pattern_idx = int(start * 2) % 4
+                            if pattern_idx == 0:
+                                pitch = chord_notes[0]  # Lowest
+                            elif pattern_idx == 1:
+                                pitch = chord_notes[-1]  # Highest
+                            elif pattern_idx == 2:
+                                pitch = chord_notes[len(chord_notes)//2]  # Middle
+                            else:
+                                pitch = chord_notes[-1]  # Highest
+                        else:
+                            # If chord has fewer than 3 notes, just alternate
+                            if not chord_notes:
+                                continue
+                            pitch = chord_notes[int(start * 2) % len(chord_notes)]
+                    
+                    velocity = 60  # Medium-soft for arpeggiated notes
+                    
+                    # Add the single note
+                    measure_notes.append({
+                        'pitch': pitch,
+                        'duration': duration,
+                        'velocity': velocity,
+                        'start': start,
+                        'is_chord': False
+                    })
+                else:
+                    # For block chord patterns, use the whole chord
+                    for pitch in chord_notes:
+                        velocity = 50  # Softer for accompaniment
+                        
+                        measure_notes.append({
+                            'pitch': pitch,
+                            'duration': duration,
+                            'velocity': velocity,
+                            'start': start,
+                            'is_chord': True
+                        })
+            
+            accompaniment.append(measure_notes)
+        
+        return accompaniment
 
 def validate_song_format(lines):
     """Validate the song file format and return error messages if any"""
@@ -400,7 +889,7 @@ def get_next_version(output_dir, base_name):
     
     return max(versions) + 1 if versions else 1
 
-def process_song(input_file, output_dir):
+def process_song(input_file, output_dir, enable_accompaniment=False, accompaniment_style='basic'):
     """Process a single song file"""
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
@@ -419,11 +908,16 @@ def process_song(input_file, output_dir):
     # Create filename from title and key
     safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '-', '_')).strip()
     safe_key = "".join(c for c in key if c.isalnum() or c in (' ', '-', '_')).strip()
-    base_name = f"{safe_title}_{safe_key}"
+    
+    # Add accompaniment info to filename if enabled
+    if enable_accompaniment:
+        filename_base = f"{safe_title}_{accompaniment_style}_accompaniment_{safe_key}"
+    else:
+        filename_base = f"{safe_title}_melody_only_{safe_key}"
     
     # Get next version number
-    version = get_next_version(output_dir, base_name)
-    output_file = os.path.join(output_dir, f"{base_name}_v{version}.mid")
+    version = get_next_version(output_dir, filename_base)
+    output_file = os.path.join(output_dir, f"{filename_base}_v{version}.mid")
     
     # Parse the song file
     song_data = parse_song_file(input_file)
@@ -433,9 +927,15 @@ def process_song(input_file, output_dir):
     
     # Create MIDI file
     generator = MIDIGenerator()
-    return generator.create_midi_file(song_data, output_file, song_data['tempo'])
+    return generator.create_midi_file(
+        song_data, 
+        output_file, 
+        song_data['tempo'],
+        enable_accompaniment=enable_accompaniment,
+        accompaniment_style=accompaniment_style
+    )
 
-def process_all_songs(input_dir, output_dir):
+def process_all_songs(input_dir, output_dir, enable_accompaniment=False, accompaniment_style='basic'):
     """Process all song files in the input directory"""
     success_count = 0
     total_count = 0
@@ -444,7 +944,7 @@ def process_all_songs(input_dir, output_dir):
         if file.endswith('.txt'):
             total_count += 1
             input_file = os.path.join(input_dir, file)
-            if process_song(input_file, output_dir):
+            if process_song(input_file, output_dir, enable_accompaniment, accompaniment_style):
                 success_count += 1
     
     print(f"\nProcessed {success_count} out of {total_count} songs successfully")
@@ -509,6 +1009,32 @@ def main():
         except ValueError:
             print("Please enter 1 or 2")
     
+    # Get accompaniment preferences
+    print("\nWould you like to add automatic accompaniment to your song?")
+    print("This will generate a chord-based accompaniment track based on the melody")
+    accomp_choice = input("Add accompaniment? (y/n): ").strip().lower()
+    enable_accompaniment = accomp_choice.startswith('y')
+    
+    accompaniment_style = 'basic'
+    if enable_accompaniment:
+        print("\nChoose an accompaniment style:")
+        print("1. Basic (block chords)")
+        print("2. Arpeggio (broken chords)")
+        print("3. Alberti bass (classical piano style)")
+        print("4. Waltz (3/4 feel)")
+        
+        style_choice = input("\nEnter your choice (1-4): ").strip()
+        if style_choice == '2':
+            accompaniment_style = 'arpeggio'
+        elif style_choice == '3':
+            accompaniment_style = 'alberti'
+        elif style_choice == '4':
+            accompaniment_style = 'waltz'
+        else:
+            accompaniment_style = 'basic'
+            
+        print(f"Selected accompaniment style: {accompaniment_style}")
+    
     if choice == '1':
         # Get song choice
         while True:
@@ -524,11 +1050,11 @@ def main():
         
         input_file = os.path.join(input_dir, song_files[song_choice])
         print(f"\nConverting: {song_files[song_choice]}")
-        process_song(input_file, output_dir)
+        process_song(input_file, output_dir, enable_accompaniment, accompaniment_style)
     
     else:  # choice == '2'
         print("\nConverting all songs...")
-        process_all_songs(input_dir, output_dir)
+        process_all_songs(input_dir, output_dir, enable_accompaniment, accompaniment_style)
 
 if __name__ == "__main__":
     main() 
