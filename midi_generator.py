@@ -4,6 +4,11 @@ import re
 from pathlib import Path
 from datetime import datetime
 import random
+from genre_manager import GenreManager
+import argparse
+import sys
+import math
+import traceback
 
 class MusicTheory:
     """Music theory tools to ensure proper chord selection and progression"""
@@ -451,6 +456,9 @@ class AccompanimentGenerator:
         
         # Create music theory helper
         self.music_theory = MusicTheory()
+        
+        # Initialize genre manager
+        self.genre_manager = GenreManager()
     
     def detect_key(self, song_data):
         """Attempts to detect the key from the melody notes or metadata"""
@@ -556,26 +564,48 @@ class AccompanimentGenerator:
         
         return midi_notes
     
-    def generate_accompaniment(self, song_data, style='basic'):
-        """Generate accompaniment based on melody and chosen style"""
+    def generate_accompaniment(self, song_data, style='basic', genre_id='classical'):
+        """Generate accompaniment based on melody, chosen style, and genre"""
         # Detect the song key and scale type
         key = self.detect_key(song_data)
         scale_type = self.detect_scale_type(song_data, key)
         
-        print(f"Detected key: {key}, Scale type: {scale_type}")
+        print(f"Detected key: {key}, Scale type: {scale_type}, Genre: {genre_id}")
         
-        # Generate a chord progression
+        # Get the genre
+        genre = self.genre_manager.get_genre(genre_id)
+        
+        # Get the rhythm pattern based on style or genre
+        if style == 'genre':
+            # Use the genre's preferred accompaniment pattern
+            pattern_type = genre.get_accompaniment_pattern()
+            rhythm = genre.get_rhythm_pattern(pattern_type)
+            print(f"Using genre-specific '{pattern_type}' pattern")
+        else:
+            # Use the specified style
+            if style in self.rhythm_patterns:
+                rhythm = self.rhythm_patterns[style]
+            else:
+                rhythm = self.rhythm_patterns['quarter']  # Default
+            print(f"Using specified '{style}' pattern")
+        
+        # Generate a chord progression based on music theory
         chord_progression = self.generate_chord_progression(song_data, key, scale_type)
         
-        # Choose rhythm pattern based on style
-        if style == 'waltz':
-            rhythm = self.rhythm_patterns['waltz']
-        elif style == 'arpeggio':
-            rhythm = self.rhythm_patterns['arpeggio']
-        elif style == 'alberti':
-            rhythm = self.rhythm_patterns['alberti']
-        else:
-            rhythm = self.rhythm_patterns['quarter']
+        # Use genre-specific chord progressions if using genre style
+        if style == 'genre' and genre.chord_progressions:
+            # Override with a genre-specific chord progression
+            progression_length = len(song_data['measures'])
+            genre_progression = genre.get_chord_progression(progression_length)
+            # Map scale degrees to actual chords
+            genre_chords = []
+            for degree in genre_progression:
+                genre_chords.append(self.music_theory.get_chord_for_scale_degree(degree, key, scale_type))
+            
+            # Use the genre progression if it's long enough
+            if len(genre_chords) >= progression_length:
+                chord_progression = genre_chords[:progression_length]
+                print(f"Using genre-specific chord progression")
         
         # Generate accompaniment for each measure
         accompaniment = []
@@ -601,18 +631,28 @@ class AccompanimentGenerator:
             
             print(f"Measure {measure_idx+1}: Chord {chord['type']} (Scale degree: {chord['scale_degree']})")
             
+            # Get the velocity based on genre dynamics
+            if style == 'genre':
+                velocity = self.get_velocity_for_genre(genre)
+            else:
+                velocity = 60  # Default medium-soft for arpeggiated patterns
+                if style not in ['arpeggio', 'alberti']:
+                    velocity = 50  # Softer for block chord patterns
+            
             # Apply the rhythm pattern
             for start, duration in rhythm:
                 # For arpeggio and alberti patterns, choose different chord notes
-                if style in ['arpeggio', 'alberti']:
-                    # For arpeggio, cycle through chord notes
-                    if style == 'arpeggio':
-                        if not chord_notes:
-                            continue
+                if style in ['arpeggio', 'alberti'] or (style == 'genre' and pattern_type in ['arpeggio', 'alberti', 'walking', 'swing']):
+                    # Skip if no chord notes available
+                    if not chord_notes:
+                        continue
+                    
+                    # For arpeggio/walking bass, cycle through chord notes
+                    if style == 'arpeggio' or (style == 'genre' and pattern_type in ['arpeggio', 'walking']):
                         index = int(start * 2) % len(chord_notes)
                         pitch = chord_notes[index]
                     # For alberti, use pattern: lowest, highest, middle, highest
-                    else:  # alberti
+                    elif style == 'alberti' or (style == 'genre' and pattern_type == 'alberti'):
                         if len(chord_notes) >= 3:
                             pattern_idx = int(start * 2) % 4
                             if pattern_idx == 0:
@@ -628,8 +668,13 @@ class AccompanimentGenerator:
                             if not chord_notes:
                                 continue
                             pitch = chord_notes[int(start * 2) % len(chord_notes)]
-                    
-                    velocity = 60  # Medium-soft for arpeggiated notes
+                    # For swing, use a walking bass with slight swing feel
+                    elif style == 'genre' and pattern_type == 'swing':
+                        index = int(start * 2) % len(chord_notes)
+                        pitch = chord_notes[index]
+                        # Add slight swing feel
+                        if start % 1 == 0:  # On the beat
+                            velocity += 5  # Accent on-beat notes
                     
                     # Add the single note
                     measure_notes.append({
@@ -642,7 +687,6 @@ class AccompanimentGenerator:
                 else:
                     # For block chord patterns, use the whole chord
                     for pitch in chord_notes:
-                        velocity = 50  # Softer for accompaniment
                         
                         measure_notes.append({
                             'pitch': pitch,
@@ -655,6 +699,32 @@ class AccompanimentGenerator:
             accompaniment.append(measure_notes)
         
         return accompaniment
+    
+    def get_velocity_for_genre(self, genre):
+        """Get appropriate velocity based on genre dynamics"""
+        default_dynamic = genre.dynamics.get('default', 'mf')
+        variation = genre.dynamics.get('variation', 'low')
+        
+        # Map dynamics to base velocity
+        dynamic_map = {
+            'pp': 30,
+            'p': 45, 
+            'mp': 60,
+            'mf': 75,
+            'f': 90,
+            'ff': 105
+        }
+        
+        # Get base velocity
+        base_velocity = dynamic_map.get(default_dynamic, 75)
+        
+        # Apply variation based on genre characteristics
+        if variation == 'high':
+            return base_velocity + random.randint(-15, 15)
+        elif variation == 'medium':
+            return base_velocity + random.randint(-10, 10)
+        else:  # low variation
+            return base_velocity + random.randint(-5, 5)
 
 def validate_song_format(lines):
     """Validate the song file format and return error messages if any"""
@@ -974,87 +1044,224 @@ def copy_template(template_name, new_name):
         print(f"Error copying template: {e}")
         return False
 
-def main():
-    # Define directories
-    input_dir = os.path.join(os.path.dirname(__file__), 'input', 'songs')
-    output_dir = os.path.join(os.path.dirname(__file__), 'output')
+def generate_midi(song_data, output_file=None, accompaniment_style='basic', genre=None):
+    """Generate a MIDI file from the song data dictionary"""
+    # Set up MIDI file with 2 tracks (melody and accompaniment)
+    midi = MIDIFile(2)
     
-    # Create directories if they don't exist
-    os.makedirs(input_dir, exist_ok=True)
-    os.makedirs(output_dir, exist_ok=True)
+    # Track names
+    track_names = ["Melody", "Accompaniment"]
     
-    # Get list of song files
-    song_files = [f for f in os.listdir(input_dir) if f.endswith('.txt')]
+    # Create default time signature (4/4)
+    time_signature = song_data.get('time_signature', '4/4')
+    numerator, denominator = map(int, time_signature.split('/'))
     
-    if not song_files:
-        print("No song files found in input/songs directory")
-        print("Please add your song files to the input/songs directory")
-        return
-    
-    print("\nAvailable songs:")
-    for i, file in enumerate(song_files, 1):
-        print(f"{i}. {file}")
-    
-    print("\nOptions:")
-    print("1. Convert a specific song")
-    print("2. Convert all songs")
-    
-    # Get menu choice
-    while True:
-        try:
-            choice = input("\nEnter your choice (1 or 2): ").strip()
-            if choice in ['1', '2']:
-                break
-            print("Please enter 1 or 2")
-        except ValueError:
-            print("Please enter 1 or 2")
-    
-    # Get accompaniment preferences
-    print("\nWould you like to add automatic accompaniment to your song?")
-    print("This will generate a chord-based accompaniment track based on the melody")
-    accomp_choice = input("Add accompaniment? (y/n): ").strip().lower()
-    enable_accompaniment = accomp_choice.startswith('y')
-    
-    accompaniment_style = 'basic'
-    if enable_accompaniment:
-        print("\nChoose an accompaniment style:")
-        print("1. Basic (block chords)")
-        print("2. Arpeggio (broken chords)")
-        print("3. Alberti bass (classical piano style)")
-        print("4. Waltz (3/4 feel)")
+    # Set up tracks
+    for i, name in enumerate(track_names):
+        midi.addTrackName(i, 0, name)
+        midi.addTimeSignature(i, 0, numerator, int(math.log(denominator, 2)), 24)
         
-        style_choice = input("\nEnter your choice (1-4): ").strip()
-        if style_choice == '2':
-            accompaniment_style = 'arpeggio'
-        elif style_choice == '3':
-            accompaniment_style = 'alberti'
-        elif style_choice == '4':
-            accompaniment_style = 'waltz'
+        # Set tempo (default to 120 BPM if not specified)
+        tempo = int(song_data.get('tempo', 120))
+        midi.addTempo(i, 0, tempo)
+    
+    # Track 0: Melody
+    # Set instrument for melody (default to piano)
+    melody_instrument = int(song_data.get('instrument', 0))  # 0 = Acoustic Grand Piano
+    midi.addProgramChange(0, 0, 0, melody_instrument)
+    
+    # Generate MIDI data for each measure in the melody
+    time = 0  # Current time in quarter notes
+    
+    # Find the highest velocity in the song for normalization
+    max_velocity = 0
+    for measure in song_data['measures']:
+        for note_data in measure:
+            if isinstance(note_data, list):  # Chord
+                for note in note_data:
+                    max_velocity = max(max_velocity, note.get('velocity', 100))
+            else:  # Single note
+                max_velocity = max(max_velocity, note_data.get('velocity', 100))
+    
+    # If no notes with velocity, default to 100
+    if max_velocity == 0:
+        max_velocity = 100
+    
+    # Process each measure
+    for measure_idx, measure in enumerate(song_data['measures']):
+        measure_start_time = time
+        measure_end_time = time
+        
+        # Process each note in the measure
+        for note_data in measure:
+            if isinstance(note_data, list):  # Chord
+                # For chords, all notes start at the same time
+                chord_start = note_data[0].get('start', 0) + time
+                
+                for note in note_data:
+                    # Extract note data
+                    pitch = note.get('pitch', 60)
+                    duration = note.get('duration', 1.0)
+                    # Normalize velocity to a maximum of 100
+                    velocity = int(min(100, (note.get('velocity', 90) / max_velocity) * 100))
+                    
+                    # Add note to MIDI file
+                    midi.addNote(0, 0, pitch, chord_start, duration, velocity)
+                    measure_end_time = max(measure_end_time, chord_start + duration)
+            else:  # Single note
+                # Extract note data
+                pitch = note_data.get('pitch', 60)
+                duration = note_data.get('duration', 1.0)
+                start = note_data.get('start', 0) + time
+                # Normalize velocity
+                velocity = int(min(100, (note_data.get('velocity', 90) / max_velocity) * 100))
+                
+                # Add note to MIDI file
+                midi.addNote(0, 0, pitch, start, duration, velocity)
+                measure_end_time = max(measure_end_time, start + duration)
+        
+        # Update the time to the end of the measure
+        time = measure_end_time
+    
+    # Track 1: Accompaniment (if enabled)
+    if accompaniment_style != 'none':
+        # Generate accompaniment
+        genre_id = genre if genre else 'classical'  # Default to classical if not specified
+        accompaniment_generator = AccompanimentGenerator()
+        
+        # Select appropriate bass instrument based on genre
+        if genre:
+            genre_obj = accompaniment_generator.genre_manager.get_genre(genre)
+            if genre_obj:
+                instrument = genre_obj.get_instrument()
+                # Set the accompaniment instrument
+                midi.addProgramChange(1, 0, 0, instrument)
+                print(f"Using genre-specific instrument: {instrument}")
+            else:
+                # Default to acoustic bass
+                midi.addProgramChange(1, 0, 0, 32)  # Acoustic Bass
         else:
-            accompaniment_style = 'basic'
-            
-        print(f"Selected accompaniment style: {accompaniment_style}")
-    
-    if choice == '1':
-        # Get song choice
-        while True:
-            try:
-                print("\nEnter the number of the song to convert (1-{})".format(len(song_files)))
-                song_choice = input("> ").strip()
-                song_choice = int(song_choice) - 1
-                if 0 <= song_choice < len(song_files):
-                    break
-                print(f"Please enter a number between 1 and {len(song_files)}")
-            except ValueError:
-                print("Please enter a valid number")
+            # Default to acoustic bass
+            midi.addProgramChange(1, 0, 0, 32)  # Acoustic Bass
         
-        input_file = os.path.join(input_dir, song_files[song_choice])
-        print(f"\nConverting: {song_files[song_choice]}")
-        process_song(input_file, output_dir, enable_accompaniment, accompaniment_style)
+        # Generate accompaniment
+        accompaniment = accompaniment_generator.generate_accompaniment(
+            song_data, 
+            style=accompaniment_style,
+            genre_id=genre_id
+        )
+        
+        # Add accompaniment notes to MIDI file
+        time = 0
+        for measure_idx, measure in enumerate(accompaniment):
+            # Skip empty measures
+            if not measure:
+                # Find the corresponding melody measure duration
+                if measure_idx < len(song_data['measures']):
+                    melody_measure = song_data['measures'][measure_idx]
+                    measure_duration = 0
+                    for note_data in melody_measure:
+                        if isinstance(note_data, list):  # Chord
+                            for note in note_data:
+                                measure_duration = max(measure_duration, 
+                                                      note.get('start', 0) + note.get('duration', 1.0))
+                        else:  # Single note
+                            measure_duration = max(measure_duration, 
+                                                  note_data.get('start', 0) + note_data.get('duration', 1.0))
+                    time += measure_duration
+                else:
+                    time += numerator  # Default measure length
+                continue
+            
+            measure_start_time = time
+            measure_end_time = time
+            
+            # Add notes for this measure
+            for note_data in measure:
+                # Extract note data
+                pitch = note_data.get('pitch', 48)  # Default to C3
+                duration = note_data.get('duration', 1.0)
+                start = note_data.get('start', 0) + time
+                velocity = note_data.get('velocity', 70)  # Accompaniment slightly softer
+                
+                # Add note to MIDI file
+                midi.addNote(1, 0, pitch, start, duration, velocity)
+                measure_end_time = max(measure_end_time, start + duration)
+            
+            # Update the time to the end of the measure
+            time = measure_end_time
     
-    else:  # choice == '2'
-        print("\nConverting all songs...")
-        process_all_songs(input_dir, output_dir, enable_accompaniment, accompaniment_style)
+    # Determine output file name if not provided
+    if output_file is None:
+        # Create a directory for output files if it doesn't exist
+        output_dir = Path('output')
+        output_dir.mkdir(exist_ok=True)
+        
+        # Use song title for file name, or a timestamp if not available
+        title = song_data.get('title', 'Untitled')
+        if not title:
+            title = 'Untitled'
+        
+        # Clean filename - remove invalid characters
+        title = re.sub(r'[^\w\s-]', '', title.strip().lower())
+        title = re.sub(r'[-\s]+', '-', title)
+        
+        # Add accompaniment style to filename
+        filename = f"{title}_{accompaniment_style}"
+        
+        # Add genre to filename if specified
+        if genre:
+            filename += f"_{genre}"
+        
+        # Add timestamp for uniqueness
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename += f"_{timestamp}.mid"
+        
+        output_file = output_dir / filename
+    
+    # Write the MIDI file
+    with open(output_file, 'wb') as output_file_obj:
+        midi.writeFile(output_file_obj)
+    
+    return output_file
+
+def main():
+    """Process input file and generate MIDI output"""
+    parser = argparse.ArgumentParser(description='Convert text-based music notation to MIDI')
+    parser.add_argument('input_file', help='Input file with text-based music notation')
+    parser.add_argument('-o', '--output', help='Output MIDI file name')
+    parser.add_argument('-a', '--accompaniment', 
+                        choices=['none', 'basic', 'quarter', 'half', 'whole', 'waltz', 'alberti', 'arpeggio', 'genre'],
+                        default='basic',
+                        help='Accompaniment style to generate')
+    parser.add_argument('-g', '--genre',
+                        choices=['classical', 'baroque', 'romantic', 'pop', 'rock', 'jazz', 'swing'],
+                        help='Musical genre for the accompaniment')
+    
+    args = parser.parse_args()
+    
+    try:
+        # Read and parse the input file
+        with open(args.input_file, 'r') as file:
+            lines = file.readlines()
+        
+        # Parse the song
+        song_data = parse_song(lines)
+        
+        # Generate MIDI file
+        output_file = generate_midi(
+            song_data, 
+            output_file=args.output,
+            accompaniment_style=args.accompaniment,
+            genre=args.genre
+        )
+        
+        print(f"MIDI file successfully generated: {output_file}")
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        traceback.print_exc()
+        sys.exit(1)
 
 if __name__ == "__main__":
     main() 

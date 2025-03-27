@@ -1,85 +1,135 @@
 # MusicMidi
 
-A Python-based MIDI file generator that converts text-based musical notation into MIDI files.
+A simple text-to-MIDI converter that transforms human-readable music notation into playable MIDI files.
 
 ## Features
 
-- Convert text-based musical notation to MIDI files
-- Support for single notes and chords
-- Dynamic control (pp, p, mp, mf, f, ff)
-- Multiple duration types (whole, half, quarter, eighth, etc.)
-- Precise note timing within measures
-- Support for multiple measures (up to 1000)
-- Automatic versioning of output files
+- Convert readable music notation to MIDI files
+- Simple text format for defining notes, durations, and measures
+- Support for multiple voices, chords, and rests
+- Automatic accompaniment generation based on melody
+- Genre-based music generation with different musical styles
 
 ## Input Format
 
-The input file should follow this format:
+The input format is a simple text file with the following structure:
 
 ```
 Title: Song Title
-Key: Key Signature
-Time Signature: 4/4
 Tempo: 120
+Time Signature: 4/4
+Key: C major
 
-Measure X Y.Z Note Dynamic Duration
+# Comments are supported with the hash symbol
+| C4q D4q E4q F4q | G4h A4h | G4w |
 ```
 
-Where:
-- X is the measure number (1-1000)
-- Y.Z is the start time in beats (e.g., 1.0 = beat 1, 1.5 = halfway through beat 1)
-- Note is either a single note (e.g., C5) or a chord (e.g., [C5, E5, G5])
-- Dynamic is the volume (p, mp, mf, f, etc.)
-- Duration is the note length (quarter, half, whole, etc.)
+Notes are specified with:
+- Pitch (C, D, E, F, G, A, B, with optional # or b for sharps/flats)
+- Octave (0-9)
+- Duration (w = whole, h = half, q = quarter, e = eighth, s = sixteenth)
+- Optional dot (.) for dotted notes
 
-Example:
-```
-Measure 1 1.0 C5 p quarter
-Measure 1 2.0 D5 mf quarter
-Measure 1 1.0 [C4, E4, G4] p half
-```
+For full details, see the example songs in the `input/songs` directory.
 
 ## Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/MusicMidi.git
+```
+git clone https://github.com/day-trading-oracle/MusicMidi.git
 cd MusicMidi
 ```
 
-2. Install dependencies:
-```bash
+2. Install the required dependencies:
+```
 pip install -r requirements.txt
+```
+
+3. Run the setup script to create necessary directories:
+```
+# On Windows
+python setup.ps1
+
+# On Linux/Mac
+python setup.py
 ```
 
 ## Usage
 
-1. Place your song files in the `input/songs` directory
-2. Run the script:
-```bash
-python midi_generator.py
+### Basic Usage
+
 ```
-3. Choose to convert a specific song or all songs
-4. Find the generated MIDI files in the `output` directory
+python midi_generator.py input/songs/your_song.txt -o output/your_song.mid
+```
+
+### Command Line Options
+
+```
+python midi_generator.py input/songs/your_song.txt [-o OUTPUT] [-a ACCOMPANIMENT] [-g GENRE]
+```
+
+Arguments:
+- `input_file`: Path to the input text file
+- `-o, --output`: Output MIDI file name (optional)
+- `-a, --accompaniment`: Accompaniment style to generate (optional)
+  - Choices: none, basic, quarter, half, whole, waltz, alberti, arpeggio, genre
+  - Default: basic
+- `-g, --genre`: Musical genre for the accompaniment (optional)
+  - Choices: classical, baroque, romantic, pop, rock, jazz, swing
+
+### Genre Selection
+
+You can specify a musical genre to give your accompaniment a specific style:
+
+```
+python midi_generator.py input/songs/your_song.txt -a genre -g jazz
+```
+
+Available genres:
+- classical: Traditional classical music style
+- baroque: Baroque music with structured patterns
+- romantic: Expressive romantic era style
+- pop: Modern pop music style
+- rock: Rock music with strong beats
+- jazz: Jazz style with complex harmonies
+- swing: Swing jazz with characteristic rhythm
+
+### Test Scripts
+
+You can run test scripts to see examples of different features:
+
+```
+# Test accompaniment generation
+python test_accompaniment.py
+
+# Test genre selection
+python test_genre.py
+```
 
 ## Project Structure
 
 ```
 MusicMidi/
-├── input/
-│   ├── songs/         # Place your song files here
-│   └── templates/     # Template files for new songs
-├── output/           # Generated MIDI files
-├── midi_generator.py # Main script
-├── requirements.txt  # Python dependencies
-└── README.md        # This file
+├── input/                # Directory for input files
+│   └── songs/            # Song text files
+├── output/               # Generated MIDI files
+├── midi_generator.py     # Main script
+├── genre_manager.py      # Genre selection system
+├── test_accompaniment.py # Test script for accompaniment
+├── test_genre.py         # Test script for genre selection
+├── setup.ps1             # Setup script for Windows
+├── setup.py              # Setup script for Linux/Mac
+├── requirements.txt      # Required Python packages
+└── README.md             # This file
 ```
 
 ## Contributing
 
+Contributions are welcome! If you'd like to contribute, please:
+
 1. Fork the repository
 2. Create a new branch for your feature
-3. Make your changes
+3. Add your changes
 4. Submit a pull request
 
 ## License
