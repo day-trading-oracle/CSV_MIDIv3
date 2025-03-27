@@ -11,10 +11,14 @@ from genre_manager import GenreManager
 
 def main():
     """Generate test MIDI files with different genres"""
-    # Set up paths
-    input_dir = Path('input/songs')
-    output_dir = Path('output')
-    output_dir.mkdir(exist_ok=True)
+    # Set up paths with absolute paths
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    input_dir = os.path.join(base_dir, 'input', 'songs')
+    output_dir = os.path.join(base_dir, 'output')
+    
+    # Create directories if they don't exist
+    os.makedirs(input_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     
     # Get the list of available genres
     genre_manager = GenreManager()
@@ -25,14 +29,14 @@ def main():
         print(f"- {genre}")
     
     # Look for test song file
-    test_file = input_dir / 'test_song.txt'
+    test_file = os.path.join(input_dir, 'test_song.txt')
     
-    if not test_file.exists():
+    if not os.path.exists(test_file):
         print(f"Test song file not found at {test_file}")
         print("Creating a simple test song file...")
         
         # Create test song file if it doesn't exist
-        os.makedirs(input_dir, exist_ok=True)
+        os.makedirs(os.path.dirname(test_file), exist_ok=True)
         with open(test_file, 'w') as f:
             f.write("""Title: Genre Test Song
 Tempo: 120

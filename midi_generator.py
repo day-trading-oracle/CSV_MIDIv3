@@ -808,138 +808,194 @@ def convert_to_standard_format(lines):
     
     return standardized_lines
 
-def parse_song_file(file_path):
-    """Parse a song file and return song data"""
-    try:
-        print(f"\nParsing file: {file_path}")
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
-        
-        # Create MIDIGenerator instance
-        generator = MIDIGenerator()
-        
-        song_data = {
-            'title': '',
-            'key': '',
-            'time_signature': '',
-            'tempo': 120,
-            'measures': {}
-        }
-        
-        print("\nProcessing lines:")
-        # Process the lines
-        for i, line in enumerate(lines, 1):
-            line = line.strip()
-            if not line:
-                continue
+def parse_song(lines):
+    """Parse song data from text lines in the new format"""
+    song_data = {
+        'title': 'Untitled',
+        'key': 'C major',
+        'time_signature': '4/4',
+        'tempo': 120,
+        'measures': []
+    }
+    
+    # First, extract metadata
+    in_header = True
+    in_measures = False
+    current_measure = []
+    
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
             
-            print(f"\nLine {i}: '{line}'")
+        # Process header information
+        if ':' in line and in_header:
+            parts = line.split(':', 1)
+            key = parts[0].strip().lower()
+            value = parts[1].strip()
             
-            # Parse header information
-            if line.startswith('Title:'):
-                song_data['title'] = line[6:].strip()
-                print(f"Found title: {song_data['title']}")
-            elif line.startswith('Key:'):
-                song_data['key'] = line[4:].strip()
-                print(f"Found key: {song_data['key']}")
-            elif line.startswith('Time Signature:'):
-                song_data['time_signature'] = line[14:].strip()
-                print(f"Found time signature: {song_data['time_signature']}")
-            elif line.startswith('Tempo:'):
-                song_data['tempo'] = int(line[6:].strip().split()[0])
-                print(f"Found tempo: {song_data['tempo']}")
-            
-            # Parse note line
-            elif line.startswith('Measure'):
+            if key == 'title':
+                song_data['title'] = value
+            elif key == 'key':
+                song_data['key'] = value
+            elif key == 'time signature':
+                song_data['time_signature'] = value
+            elif key == 'tempo':
                 try:
-                    # Split the line into parts
-                    parts = line.split()
-                    if len(parts) < 6:
-                        print(f"Warning: Invalid note line format: {line}")
-                        print("Expected format: Measure X Y.Z Note Dynamic Duration")
-                        continue
-                    
-                    # Extract all variables
-                    measure_num = int(parts[1])
-                    start_time = float(parts[2])  # Y.Z format
-                    note_str = parts[3]
-                    dynamics = parts[4]
-                    duration = parts[5]
-                    
-                    print(f"Processing note: Measure {measure_num}, Start {start_time}, Note {note_str}, Dynamics {dynamics}, Duration {duration}")
-                    
-                    # Validate measure number (1-1000)
-                    if not (1 <= measure_num <= 1000):
-                        print(f"Warning: Invalid measure number {measure_num}. Must be between 1 and 1000.")
-                        continue
-                    
-                    # Validate start time format (Y.Z)
-                    if not (0.0 <= start_time <= 4.0):  # Assuming 4/4 time
-                        print(f"Warning: Invalid start time {start_time}. Must be between 0.0 and 4.0.")
-                        continue
-                    
-                    # Initialize measure if it doesn't exist
-                    if measure_num not in song_data['measures']:
-                        song_data['measures'][measure_num] = []
-                    
-                    # Handle both single notes and chords
-                    if note_str.startswith('[') and note_str.endswith(']'):
-                        # Process chord
-                        chord_notes = note_str[1:-1].split(',')
-                        chord_data = []
-                        for chord_note in chord_notes:
-                            chord_note = chord_note.strip()
-                            midi_number = generator.note_to_midi_number(chord_note)
-                            if midi_number is not None:
-                                chord_data.append({
-                                    'pitch': midi_number,
-                                    'duration': generator.parse_duration(duration),
-                                    'velocity': generator.parse_dynamics(dynamics),
-                                    'start': start_time,
-                                    'is_chord': True
-                                })
-                                print(f"Added chord note: {chord_note} -> MIDI {midi_number}")
-                            else:
-                                print(f"Warning: Invalid note in chord: {chord_note}")
-                        if chord_data:
-                            song_data['measures'][measure_num].extend(chord_data)
-                    else:
-                        # Process single note
-                        midi_number = generator.note_to_midi_number(note_str)
-                        if midi_number is not None:
-                            note_data = {
-                                'pitch': midi_number,
-                                'duration': generator.parse_duration(duration),
-                                'velocity': generator.parse_dynamics(dynamics),
-                                'start': start_time,
-                                'is_chord': False
-                            }
-                            song_data['measures'][measure_num].append(note_data)
-                            print(f"Added note: {note_str} -> MIDI {midi_number}")
-                        else:
-                            print(f"Warning: Invalid note format: {note_str}")
-                
-                except (ValueError, IndexError) as e:
-                    print(f"Warning: Error parsing note line: {line}")
-                    print(f"Error details: {e}")
-                    continue
-        
-        # Convert measures dictionary to list
-        if not song_data['measures']:
-            print("Warning: No valid measures found in the song file")
-            return None
+                    song_data['tempo'] = int(value.split()[0])
+                except (ValueError, IndexError):
+                    pass  # Keep default tempo if invalid
+            continue
             
-        max_measure = max(song_data['measures'].keys())
-        song_data['measures'] = [song_data['measures'].get(i, []) for i in range(1, max_measure + 1)]
+        # When we hit a line that starts with '|' we're in the measures section
+        if line.startswith('|'):
+            in_header = False
+            in_measures = True
+            
+            # Process the measure (split by pipes, ignoring empty segments)
+            segments = [s.strip() for s in line.split('|') if s.strip()]
+            
+            for segment in segments:
+                # Each segment is a measure
+                measure_notes = parse_measure(segment)
+                song_data['measures'].append(measure_notes)
         
-        print(f"\nParsing complete. Found {len(song_data['measures'])} measures")
-        return song_data
-    except Exception as e:
-        print(f"Error parsing song file: {e}")
-        import traceback
-        print("Traceback:")
-        traceback.print_exc()
+        # Check for comments or other non-measure content
+        elif line.startswith('#'):
+            continue
+    
+    # Ensure we have at least one measure
+    if not song_data['measures']:
+        song_data['measures'] = [[]]
+        
+    return song_data
+
+def parse_measure(measure_text):
+    """Parse a single measure of text into note data"""
+    notes = []
+    tokens = measure_text.split()
+    
+    # Time markers track the start time of each note within the measure
+    start_time = 0.0
+    
+    for token in tokens:
+        # Skip if token is empty
+        if not token:
+            continue
+            
+        # Check if it's a chord
+        if token.startswith('[') and token.endswith(']'):
+            # Process chord
+            chord_tokens = token[1:-1].split(',')
+            chord_notes = []
+            
+            for note_token in chord_tokens:
+                note_data = parse_note(note_token.strip())
+                if note_data:
+                    note_data['start'] = start_time
+                    chord_notes.append(note_data)
+            
+            if chord_notes:
+                # Calculate duration for time tracking
+                duration = chord_notes[0]['duration']
+                start_time += duration
+                notes.append(chord_notes)
+        else:
+            # Process single note
+            note_data = parse_note(token)
+            if note_data:
+                note_data['start'] = start_time
+                start_time += note_data['duration']
+                notes.append(note_data)
+    
+    return notes
+
+def parse_note(note_token):
+    """Parse a note token (e.g., 'C4q', 'G#3h', 'A5s.') into note data"""
+    # Basic validation
+    if not note_token:
         return None
+        
+    # Check for rests
+    if note_token.lower().startswith('r'):
+        # For rests, we only care about duration
+        duration_part = note_token[1:]
+        duration = parse_duration_code(duration_part)
+        
+        return {
+            'pitch': 0,  # Use pitch 0 as a placeholder for rests
+            'duration': duration,
+            'velocity': 0,  # No velocity for rests
+            'is_rest': True
+        }
+    
+    # Regular expression to match note format
+    # Format: [note][accidental?][octave][duration][dot?]
+    # Example: C#4q. = C sharp, octave 4, quarter note, dotted
+    match = re.match(r'([A-Ga-g])([#b]?)(\d+)([wWhHqQeEsS])(\.*)', note_token)
+    
+    if not match:
+        return None
+        
+    note, accidental, octave, duration_code, dot = match.groups()
+    
+    # Convert note to pitch value (C=0, D=2, etc.)
+    note_values = {'c': 0, 'd': 2, 'e': 4, 'f': 5, 'g': 7, 'a': 9, 'b': 11}
+    pitch = note_values[note.lower()]
+    
+    # Apply accidental
+    if accidental == '#':
+        pitch += 1
+    elif accidental == 'b':
+        pitch -= 1
+    
+    # Calculate full MIDI pitch (octave * 12 + pitch)
+    midi_pitch = int(octave) * 12 + pitch
+    
+    # Parse duration
+    duration = parse_duration_code(duration_code.lower() + dot)
+    
+    # Default to medium velocity (mf)
+    velocity = 80
+    
+    return {
+        'pitch': midi_pitch,
+        'duration': duration,
+        'velocity': velocity,
+        'is_rest': False
+    }
+
+def parse_duration_code(duration_code):
+    """Convert duration code to actual duration in beats"""
+    # Base durations
+    base_durations = {
+        'w': 4.0,   # whole note
+        'h': 2.0,   # half note
+        'q': 1.0,   # quarter note
+        'e': 0.5,   # eighth note
+        's': 0.25   # sixteenth note
+    }
+    
+    if not duration_code:
+        return 1.0  # Default to quarter note
+    
+    # Get base duration
+    base = duration_code[0].lower()
+    
+    if base not in base_durations:
+        return 1.0  # Default to quarter note if unknown
+    
+    duration = base_durations[base]
+    
+    # Apply dots (each dot adds half the previous value)
+    dots = duration_code.count('.')
+    dot_value = duration / 2.0
+    
+    for _ in range(dots):
+        duration += dot_value
+        dot_value /= 2.0
+    
+    return duration
 
 def get_next_version(output_dir, base_name):
     """Get the next version number for a file"""
@@ -959,65 +1015,67 @@ def get_next_version(output_dir, base_name):
     
     return max(versions) + 1 if versions else 1
 
-def process_song(input_file, output_dir, enable_accompaniment=False, accompaniment_style='basic'):
+def process_song(input_file, output_dir, accompaniment_style='basic', genre=None):
     """Process a single song file"""
-    # Create output directory if it doesn't exist
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Read headers for filename
-    title = "Untitled"
-    key = "C"
-    with open(input_file, 'r') as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith('Title:'):
-                title = line[6:].strip()
-            elif line.startswith('Key:'):
-                key = line[4:].strip()
-    
-    # Create filename from title and key
-    safe_title = "".join(c for c in title if c.isalnum() or c in (' ', '-', '_')).strip()
-    safe_key = "".join(c for c in key if c.isalnum() or c in (' ', '-', '_')).strip()
-    
-    # Add accompaniment info to filename if enabled
-    if enable_accompaniment:
-        filename_base = f"{safe_title}_{accompaniment_style}_accompaniment_{safe_key}"
-    else:
-        filename_base = f"{safe_title}_melody_only_{safe_key}"
-    
-    # Get next version number
-    version = get_next_version(output_dir, filename_base)
-    output_file = os.path.join(output_dir, f"{filename_base}_v{version}.mid")
-    
-    # Parse the song file
-    song_data = parse_song_file(input_file)
-    if not song_data:
-        print(f"Failed to parse {input_file}")
-        return False
-    
-    # Create MIDI file
-    generator = MIDIGenerator()
-    return generator.create_midi_file(
-        song_data, 
-        output_file, 
-        song_data['tempo'],
-        enable_accompaniment=enable_accompaniment,
-        accompaniment_style=accompaniment_style
-    )
+    try:
+        with open(input_file, 'r') as file:
+            lines = file.readlines()
+            
+        # Parse the song
+        song_data = parse_song(lines)
+        
+        # Make sure output_dir is an absolute path
+        if not os.path.isabs(output_dir):
+            output_dir = os.path.join(os.path.dirname(__file__), output_dir)
+        
+        # Generate MIDI file
+        output_file = generate_midi(
+            song_data, 
+            output_file=None,  # Auto-generate filename
+            accompaniment_style=accompaniment_style,
+            genre=genre
+        )
+        
+        print(f"MIDI file successfully generated: {output_file}")
+        
+    except Exception as e:
+        print(f"Error processing {input_file}: {e}")
+        traceback.print_exc()
 
-def process_all_songs(input_dir, output_dir, enable_accompaniment=False, accompaniment_style='basic'):
+def process_all_songs(input_dir, output_dir, accompaniment_style='basic', genre=None):
     """Process all song files in the input directory"""
+    print(f"Processing all songs in {input_dir}")
+    
+    # Make sure directories are absolute paths
+    if not os.path.isabs(input_dir):
+        input_dir = os.path.join(os.path.dirname(__file__), input_dir)
+    if not os.path.isabs(output_dir):
+        output_dir = os.path.join(os.path.dirname(__file__), output_dir)
+    
+    # Get list of song files
+    song_files = [f for f in os.listdir(input_dir) if f.endswith('.txt')]
+    
+    if not song_files:
+        print("No song files found")
+        return False
+        
+    print(f"Found {len(song_files)} song files")
+    
+    # Process each file
     success_count = 0
     total_count = 0
     
-    for file in os.listdir(input_dir):
-        if file.endswith('.txt'):
+    for file in song_files:
+        print(f"\nProcessing: {file}")
+        try:
             total_count += 1
             input_file = os.path.join(input_dir, file)
-            if process_song(input_file, output_dir, enable_accompaniment, accompaniment_style):
-                success_count += 1
+            process_song(input_file, output_dir, accompaniment_style, genre)
+            success_count += 1
+        except Exception as e:
+            print(f"Error processing {file}: {e}")
     
-    print(f"\nProcessed {success_count} out of {total_count} songs successfully")
+    print(f"\nSuccessfully processed {success_count} out of {total_count} files")
 
 def copy_template(template_name, new_name):
     """Copy a template file to create a new song file"""
@@ -1194,8 +1252,8 @@ def generate_midi(song_data, output_file=None, accompaniment_style='basic', genr
     # Determine output file name if not provided
     if output_file is None:
         # Create a directory for output files if it doesn't exist
-        output_dir = Path('output')
-        output_dir.mkdir(exist_ok=True)
+        output_dir = os.path.join(os.path.dirname(__file__), 'output')
+        os.makedirs(output_dir, exist_ok=True)
         
         # Use song title for file name, or a timestamp if not available
         title = song_data.get('title', 'Untitled')
@@ -1217,7 +1275,7 @@ def generate_midi(song_data, output_file=None, accompaniment_style='basic', genr
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename += f"_{timestamp}.mid"
         
-        output_file = output_dir / filename
+        output_file = os.path.join(output_dir, filename)
     
     # Write the MIDI file
     with open(output_file, 'wb') as output_file_obj:
@@ -1226,42 +1284,119 @@ def generate_midi(song_data, output_file=None, accompaniment_style='basic', genr
     return output_file
 
 def main():
-    """Process input file and generate MIDI output"""
-    parser = argparse.ArgumentParser(description='Convert text-based music notation to MIDI')
-    parser.add_argument('input_file', help='Input file with text-based music notation')
-    parser.add_argument('-o', '--output', help='Output MIDI file name')
-    parser.add_argument('-a', '--accompaniment', 
-                        choices=['none', 'basic', 'quarter', 'half', 'whole', 'waltz', 'alberti', 'arpeggio', 'genre'],
-                        default='basic',
-                        help='Accompaniment style to generate')
-    parser.add_argument('-g', '--genre',
-                        choices=['classical', 'baroque', 'romantic', 'pop', 'rock', 'jazz', 'swing'],
-                        help='Musical genre for the accompaniment')
+    # Define directories (use absolute paths)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    input_dir = os.path.join(base_dir, 'input', 'songs')
+    output_dir = os.path.join(base_dir, 'output')
     
-    args = parser.parse_args()
+    # Create directories if they don't exist
+    os.makedirs(input_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     
-    try:
-        # Read and parse the input file
-        with open(args.input_file, 'r') as file:
-            lines = file.readlines()
+    # Get list of song files
+    song_files = [f for f in os.listdir(input_dir) if f.endswith('.txt')]
+    
+    if not song_files:
+        print("No song files found in input/songs directory")
+        print("Please add your song files to the input/songs directory")
+        return
+    
+    print("\nAvailable songs:")
+    for i, file in enumerate(song_files, 1):
+        print(f"{i}. {file}")
+    
+    print("\nOptions:")
+    print("1. Convert a specific song")
+    print("2. Convert all songs")
+    
+    # Get menu choice
+    while True:
+        try:
+            choice = input("\nEnter your choice (1 or 2): ").strip()
+            if choice in ['1', '2']:
+                break
+            print("Please enter 1 or 2")
+        except ValueError:
+            print("Please enter 1 or 2")
+    
+    # Get accompaniment preferences
+    print("\nWould you like to add automatic accompaniment to your song?")
+    print("This will generate a chord-based accompaniment track based on the melody")
+    accomp_choice = input("Add accompaniment? (y/n): ").strip().lower()
+    enable_accompaniment = accomp_choice.startswith('y')
+    
+    accompaniment_style = 'none' if not enable_accompaniment else 'basic'
+    genre = None
+    
+    if enable_accompaniment:
+        print("\nChoose an accompaniment style:")
+        print("1. Basic (block chords)")
+        print("2. Arpeggio (broken chords)")
+        print("3. Alberti bass (classical piano style)")
+        print("4. Waltz (3/4 feel)")
+        print("5. Genre-specific style")
         
-        # Parse the song
-        song_data = parse_song(lines)
+        style_choice = input("\nEnter your choice (1-5): ").strip()
+        if style_choice == '2':
+            accompaniment_style = 'arpeggio'
+        elif style_choice == '3':
+            accompaniment_style = 'alberti'
+        elif style_choice == '4':
+            accompaniment_style = 'waltz'
+        elif style_choice == '5':
+            accompaniment_style = 'genre'
+            
+            # Get genre selection
+            print("\nChoose a musical genre:")
+            print("1. Classical")
+            print("2. Baroque")
+            print("3. Romantic")
+            print("4. Pop")
+            print("5. Rock")
+            print("6. Jazz")
+            print("7. Swing")
+            
+            genre_choice = input("\nEnter your choice (1-7): ").strip()
+            genre_map = {
+                '1': 'classical',
+                '2': 'baroque',
+                '3': 'romantic',
+                '4': 'pop',
+                '5': 'rock',
+                '6': 'jazz',
+                '7': 'swing'
+            }
+            genre = genre_map.get(genre_choice, 'classical')
+        else:
+            accompaniment_style = 'basic'
+            
+        print(f"Selected accompaniment style: {accompaniment_style}")
+        if genre:
+            print(f"Selected genre: {genre}")
+    
+    if choice == '1':
+        # Get song choice
+        while True:
+            try:
+                print("\nEnter the number of the song to convert (1-{})".format(len(song_files)))
+                song_choice = input("> ").strip()
+                song_choice = int(song_choice) - 1
+                if 0 <= song_choice < len(song_files):
+                    break
+                print(f"Please enter a number between 1 and {len(song_files)}")
+            except ValueError:
+                print("Please enter a valid number")
         
-        # Generate MIDI file
-        output_file = generate_midi(
-            song_data, 
-            output_file=args.output,
-            accompaniment_style=args.accompaniment,
-            genre=args.genre
-        )
-        
-        print(f"MIDI file successfully generated: {output_file}")
-        
-    except Exception as e:
-        print(f"Error: {e}")
-        traceback.print_exc()
-        sys.exit(1)
+        input_file = os.path.join(input_dir, song_files[song_choice])
+        print(f"\nConverting: {song_files[song_choice]}")
+        process_song(input_file, output_dir, accompaniment_style, genre)
+    
+    else:  # choice == '2'
+        print("\nConverting all songs...")
+        for song_file in song_files:
+            input_file = os.path.join(input_dir, song_file)
+            print(f"\nConverting: {song_file}")
+            process_song(input_file, output_dir, accompaniment_style, genre)
 
 if __name__ == "__main__":
     main() 
