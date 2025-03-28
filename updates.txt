@@ -1,0 +1,53 @@
+MusicMidi Project Version History
+==============================
+
+Version 1.2 (Current) - [Date: 2024-03-21]
+----------------------------------------
+New Features:
+- Added support for multiple instruments:
+  * Piano (with improved dynamics)
+  * Bass (with various styles: walking, rock, funk, jazz, pop)
+  * Drums (with basic rhythm patterns)
+  * Guitar (with chord progressions)
+- Implemented chord notation support using square brackets [C4, E4, G4]
+- Added genre-based accompaniment styles (classical, jazz, pop)
+
+Improvements:
+- Enhanced error handling for invalid notes and formats
+- Improved file path handling for input/output files
+- Better validation for time signatures and tempo
+- Added dynamic velocity mapping (pp, p, mp, mf, f, ff)
+- Implemented fallback mechanisms for empty patterns
+
+Bug Fixes:
+- Fixed "pop from empty list" error in bass pattern generation
+- Resolved chord parsing issues with whitespace
+- Fixed time signature validation
+- Corrected MIDI file path handling
+
+File Structure Updates:
+- Reorganized project into modular components
+- Added src/instruments/ directory for instrument classes
+- Created input/songs/ directory for song files
+- Added templates for new song formats
+
+Documentation:
+- Updated README.md with new features
+- Added code documentation and type hints
+- Created example song files
+- Added LICENSE file
+
+Version 1.1 - [Date: 2024-03-20]
+-------------------------------
+- Initial implementation of MIDI file generation
+- Basic piano track support
+- Simple accompaniment patterns
+- Text file input format
+- Basic error handling
+
+Version 1.0 - [Date: 2024-03-19]
+-------------------------------
+- Project initialization
+- Basic project structure
+- Requirements setup
+- Initial documentation 
