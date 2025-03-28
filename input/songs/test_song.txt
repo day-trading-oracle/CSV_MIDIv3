@@ -1,0 +1,8 @@
+Title: Accompaniment Test Song
+Tempo: 120
+Time Signature: 4/4
+Key: C major
+
+# A simple melody in C major
+| C4q D4q E4q F4q | G4q A4q G4q F4q | E4q D4q C4h |
+| C4q E4q G4q C5q | B4q A4q G4h | F4q D4q F4q A4q | G4w |
