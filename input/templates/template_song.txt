@@ -1,0 +1,174 @@
+# MIDI Song Template
+# This template shows all supported MIDI annotations and parameters
+
+# Song Metadata
+title: "Template Song"
+composer: "System Generated"
+genre: "classical"
+tempo: 120
+key: "C"
+time_signature: "4/4"
+
+# Global MIDI Settings
+midi_control_changes:
+  - time: 0
+    control: 7  # Volume
+    value: 100
+  - time: 0
+    control: 10  # Pan
+    value: 64
+
+# Piano Track
+piano:
+  program: 0  # Acoustic Grand Piano
+  channel: 0
+  notes:
+    - pitch: 60
+      start: 0.0
+      duration: 1.0
+      velocity: 80
+      articulation: "legato"
+      dynamic: "mf"
+      pedal: true
+    - pitch: 64
+      start: 1.0
+      duration: 1.0
+      velocity: 75
+      articulation: "staccato"
+      dynamic: "mp"
+      pedal: false
+
+# Guitar Track
+guitar:
+  program: 24  # Acoustic Guitar (nylon)
+  channel: 1
+  chords:
+    - root: 60
+      type: "major"
+      start: 0.0
+      duration: 2.0
+      velocity: 85
+      strum_pattern: "down-up-down-up"
+      picking: "finger"
+    - root: 64
+      type: "minor"
+      start: 2.0
+      duration: 2.0
+      velocity: 80
+      strum_pattern: "down-up-down-up"
+      picking: "finger"
+
+# Bass Track
+bass:
+  program: 32  # Acoustic Bass
+  channel: 2
+  notes:
+    - pitch: 36
+      start: 0.0
+      duration: 0.5
+      velocity: 90
+      articulation: "normal"
+      dynamic: "mf"
+    - pitch: 36
+      start: 0.5
+      duration: 0.5
+      velocity: 85
+      articulation: "normal"
+      dynamic: "mp"
+
+# Drums Track
+drums:
+  program: 128  # Standard Kit
+  channel: 9  # MIDI Channel 10 (0-based)
+  beats:
+    - position: 0
+      start: 0.0
+      instruments:
+        - name: "kick"
+          velocity: 100
+          technique: "normal"
+        - name: "hihat"
+          velocity: 70
+          technique: "closed"
+    - position: 1
+      start: 0.5
+      instruments:
+        - name: "hihat"
+          velocity: 70
+          technique: "closed"
+
+# Time Signature Changes
+time_signature_changes:
+  - measure: 4
+    time_signature: "3/4"
+  - measure: 8
+    time_signature: "4/4"
+
+# Tempo Changes
+tempo_changes:
+  - measure: 4
+    tempo: 110
+  - measure: 8
+    tempo: 120
+
+# Key Changes
+key_changes:
+  - measure: 4
+    key: "G"
+  - measure: 8
+    key: "C"
+
+# Dynamic Changes
+dynamic_changes:
+  - measure: 2
+    dynamic: "f"
+  - measure: 4
+    dynamic: "p"
+  - measure: 6
+    dynamic: "mf"
+
+# Articulation Changes
+articulation_changes:
+  - measure: 2
+    articulation: "staccato"
+  - measure: 4
+    articulation: "legato"
+  - measure: 6
+    articulation: "normal"
+
+# MIDI Control Changes
+control_changes:
+  - time: 4.0
+    control: 7  # Volume
+    value: 90
+  - time: 8.0
+    control: 7
+    value: 100
+  - time: 4.0
+    control: 10  # Pan
+    value: 32
+  - time: 8.0
+    control: 10
+    value: 96
+
+# Pitch Bend Events
+pitch_bend:
+  - time: 2.0
+    value: 8192  # Center
+  - time: 4.0
+    value: 16383  # Maximum up
+  - time: 6.0
+    value: 0  # Maximum down
+  - time: 8.0
+    value: 8192  # Center
+
+# Aftertouch Events
+aftertouch:
+  - time: 2.0
+    value: 64
+  - time: 4.0
+    value: 127
+  - time: 6.0
+    value: 0
+  - time: 8.0
+    value: 64 

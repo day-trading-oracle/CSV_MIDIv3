@@ -1,0 +1,132 @@
+MIDI Input/Output Format Template
+===============================
+
+Input Format (Text File)
+-----------------------
+Header Information:
+------------------
+Title: Song Title
+Tempo: 120                    # BPM (20-240)
+Time Signature: 4/4           # e.g., 3/4, 6/8, 5/4
+Key: C major                  # e.g., C major, A minor
+
+Measure Format:
+--------------
+Each line follows the format:
+Measure X Y.Z note dynamic duration
+
+Where:
+- X: Measure number (1-based)
+- Y.Z: Start time in beats (1.0 = first beat)
+- note: Note name (e.g., C4, F#5)
+- dynamic: Dynamic marking (pp, p, mp, mf, f, ff)
+- duration: Note duration (whole, half, quarter, eighth, sixteenth)
+
+Examples:
+---------
+Single Note:
+Measure 1 1.0 C4 mf quarter
+Measure 1 2.0 D4 mf quarter
+Measure 1 3.0 E4 mf quarter
+Measure 1 4.0 F4 mf quarter
+
+Chord:
+Measure 1 1.0 [C4, E4, G4] mf quarter
+Measure 1 2.0 [D4, F4, A4] mf quarter
+
+Output Format (MIDI Data Structure)
+---------------------------------
+The song data is converted to a dictionary with the following structure:
+
+{
+    'title': 'Song Title',
+    'tempo': 120,
+    'time_signature': '4/4',
+    'key': 'C',
+    'measures': [
+        [  # Measure 1
+            {  # Single note
+                'pitch': 60,      # MIDI note number
+                'duration': 1.0,   # Duration in quarter notes
+                'start': 0.0,      # Start time in quarter notes
+                'velocity': 80     # MIDI velocity (0-127)
+            },
+            [  # Chord
+                {
+                    'pitch': 60,   # First note of chord
+                    'duration': 1.0,
+                    'start': 1.0,
+                    'velocity': 80
+                },
+                {
+                    'pitch': 64,   # Second note of chord
+                    'duration': 1.0,
+                    'start': 1.0,
+                    'velocity': 80
+                },
+                {
+                    'pitch': 67,   # Third note of chord
+                    'duration': 1.0,
+                    'start': 1.0,
+                    'velocity': 80
+                }
+            ]
+        ]
+    ]
+}
+
+Time Signature Conversion
+------------------------
+All time signatures are converted to 4/4 for MIDI generation:
+- 3/4: Scale by 3/4
+- 6/8: Scale by 2/3
+- 5/4: Scale by 4/5
+- 7/8: Scale by 4/7
+- 9/8: Scale by 4/9
+- 12/8: Scale by 2/3
+
+Note Ranges
+-----------
+Each instrument has its own playable range:
+- Piano: 21-108 (A0 to C8)
+- Bass: 24-55 (C1 to G3)
+- Guitar: 40-76 (E2 to E5)
+- Drums: 35-81 (B1 to A5)
+
+Dynamics Mapping
+---------------
+pp: 20
+p: 40
+mp: 60
+mf: 80
+f: 100
+ff: 120
+
+Duration Mapping
+---------------
+whole: 4.0
+half: 2.0
+quarter: 1.0
+eighth: 0.5
+sixteenth: 0.25
+
+Example Song
+-----------
+Title: Simple Melody
+Tempo: 120
+Time Signature: 4/4
+Key: C major
+
+Measure 1 1.0 C4 mf quarter
+Measure 1 2.0 D4 mf quarter
+Measure 1 3.0 E4 mf quarter
+Measure 1 4.0 F4 mf quarter
+
+Measure 2 1.0 G4 mf quarter
+Measure 2 2.0 A4 mf quarter
+Measure 2 3.0 G4 mf quarter
+Measure 2 4.0 F4 mf quarter
+
+Measure 3 1.0 E4 mf quarter
+Measure 3 2.0 D4 mf quarter
+Measure 3 3.0 C4 mf half 

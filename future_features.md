@@ -1,5 +1,31 @@
 # Future Features List
 
+## Phase 0: Project Structure and Organization
+### Code Organization
+- [x] Move core modules to src/ directory
+- [x] Clean up root directory structure
+- [ ] Implement proper package structure with __init__.py files
+- [ ] Add type hints throughout the codebase
+- [ ] Implement proper dependency management
+- [ ] Add comprehensive docstrings
+- [ ] Create API documentation
+
+### Testing Infrastructure
+- [ ] Organize test files in a dedicated tests/ directory
+- [ ] Implement test fixtures and utilities
+- [ ] Add integration tests
+- [ ] Set up continuous integration
+- [ ] Add code coverage reporting
+- [ ] Implement automated testing pipeline
+
+### Documentation
+- [ ] Create comprehensive API documentation
+- [ ] Add usage examples and tutorials
+- [ ] Create developer guidelines
+- [ ] Add architecture documentation
+- [ ] Create contribution guidelines
+- [ ] Add performance optimization guide
+
 ## Phase 1: Instrument Testing and Validation
 ### Bass Instrument
 - [ ] Test walking bass patterns
@@ -113,6 +139,108 @@
 - [ ] Add technical validation
 - [ ] Add user feedback integration
 - [ ] Add automatic improvements
+
+## Time Signature Handling
+- [x] Implement automatic conversion of all time signatures to 4/4 format while preserving original tempo
+- [x] Add support for:
+  - [x] 3/4 to 4/4 conversion
+  - [x] 6/8 to 4/4 conversion
+  - [x] 5/4 to 4/4 conversion
+  - [x] Other common time signatures
+- [x] Maintain original note durations and rhythmic relationships
+- [x] Add tempo mapping to ensure musical feel is preserved
+- [x] Include visual indicators in the MIDI file metadata for original time signature
+- [x] Add validation to ensure converted rhythms maintain musical integrity
+- [ ] Add support for mixed meter and time signature changes within a song
+- [ ] Implement advanced rhythmic patterns in different time signatures
+- [ ] Add support for complex compound time signatures (e.g., 5/8, 7/8)
+- [ ] Implement automatic time signature detection from input patterns
+- [ ] Add visual representation of time signature conversions
+
+## Advanced Pattern Generation
+- [ ] Implement machine learning-based pattern generation
+- [ ] Add support for style transfer between genres
+- [ ] Create pattern variation algorithms
+- [ ] Implement pattern morphing between different styles
+- [ ] Add support for pattern layering and mixing
+- [ ] Create pattern complexity analysis
+- [ ] Implement pattern optimization for different instruments
+- [ ] Add support for pattern improvisation
+- [ ] Create pattern database for common musical phrases
+- [ ] Implement pattern recognition and reuse
+
+
+## MIDI Input Template Enhancement
+- Create comprehensive MIDI input template system:
+  - Standardize input format across all instruments
+  - Add support for detailed MIDI annotations:
+    - Time signature changes within a song
+    - Tempo changes and variations
+    - Key changes and modulations
+    - Dynamic markings (pp, p, mp, mf, f, ff)
+    - Articulation marks (staccato, legato, accent)
+    - Pedal markings for piano
+    - Guitar-specific annotations (strumming patterns, picking directions)
+    - Drum-specific annotations (ghost notes, rim shots, cymbal techniques)
+  - Add validation for required MIDI parameters:
+    - Note pitch ranges per instrument
+    - Velocity ranges
+    - Duration limits
+    - Timing constraints
+  - Implement input format conversion tools:
+    - Convert between different MIDI input formats
+    - Support for common MIDI file formats
+    - Import from popular music notation software
+  - Add documentation and examples:
+    - Sample input templates for each instrument
+    - Common use cases and patterns
+    - Error handling and validation examples
+  - Create input validation system:
+    - Check for missing required fields
+    - Validate note ranges and durations
+    - Verify time signature consistency
+    - Ensure proper chord structures
+  - Add support for advanced MIDI features:
+    - MIDI control changes (CC)
+    - Program changes
+    - Pitch bend
+    - Aftertouch
+    - System exclusive messages
+
+## Input Format Improvements
+- [ ] Add support for multiple input formats:
+  - [ ] MusicXML import
+  - [ ] MIDI file import
+  - [ ] ABC notation
+  - [ ] LilyPond format
+  - [ ] Guitar Pro format
+- [ ] Implement input format conversion tools:
+  - [ ] Convert between different input formats
+  - [ ] Batch conversion support
+  - [ ] Format validation and correction
+- [ ] Add input format templates:
+  - [ ] Create templates for different genres
+  - [ ] Add templates for different instruments
+  - [ ] Include example files
+- [ ] Enhance input validation:
+  - [ ] Real-time validation
+  - [ ] Detailed error messages
+  - [ ] Automatic correction suggestions
+- [ ] Add input format documentation:
+  - [ ] Create format specification guide
+  - [ ] Add format examples
+  - [ ] Include best practices
+- [ ] Implement input format features:
+  - [ ] Support for comments and annotations
+  - [ ] Section markers
+  - [ ] Repeats and endings
+  - [ ] Tempo changes
+  - [ ] Key changes
+  - [ ] Time signature changes
+  - [ ] Dynamic changes
+  - [ ] Articulation marks
+  - [ ] Pedal markings
+  - [ ] Instrument-specific annotations
 
 ## Version History Reference
 Based on updates.txt:
