@@ -1,20 +1,15 @@
-"""
-Instruments package for MIDI music generation.
-"""
+"""Instrument package initialization."""
 
-from .base import BaseInstrument, NoteData
+from .base import BaseInstrument
 from .piano import Piano
+from .guitar import Guitar
 from .bass import Bass
 from .drums import Drums
-from .guitar import Guitar
-from .instrument_manager import InstrumentManager
 
 __all__ = [
     'BaseInstrument',
-    'NoteData',
     'Piano',
-    'Bass',
-    'Drums',
     'Guitar',
-    'InstrumentManager',
-] 
+    'Bass',
+    'Drums'
+]

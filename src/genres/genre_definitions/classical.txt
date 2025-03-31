@@ -1,0 +1,75 @@
+{
+    "name": "classical",
+    "description": "Classical music genre characteristics",
+    "tempo_range": [60, 120],
+    "time_signatures": [[4, 4], [3, 4], [6, 8]],
+    "common_keys": ["C major", "G major", "D major", "A minor", "E minor"],
+    "instrumentation": {
+        "piano": {
+            "role": "primary",
+            "dynamics": ["pp", "p", "mp", "mf", "f", "ff"],
+            "articulation": ["legato", "staccato", "tenuto"]
+        },
+        "strings": {
+            "role": "primary",
+            "instruments": ["violin", "viola", "cello", "double bass"],
+            "dynamics": ["pp", "p", "mp", "mf", "f", "ff"],
+            "articulation": ["legato", "staccato", "spiccato", "pizzicato"]
+        },
+        "woodwinds": {
+            "role": "secondary",
+            "instruments": ["flute", "oboe", "clarinet", "bassoon"],
+            "dynamics": ["p", "mp", "mf", "f"],
+            "articulation": ["legato", "staccato"]
+        },
+        "brass": {
+            "role": "secondary",
+            "instruments": ["trumpet", "horn", "trombone", "tuba"],
+            "dynamics": ["mp", "mf", "f", "ff"],
+            "articulation": ["legato", "staccato"]
+        },
+        "percussion": {
+            "role": "accent",
+            "instruments": ["timpani", "snare drum", "bass drum", "cymbals"],
+            "dynamics": ["mp", "mf", "f", "ff"],
+            "articulation": ["staccato"]
+        }
+    },
+    "rhythm_patterns": {
+        "piano": {
+            "common_patterns": ["arpeggio", "block_chord", "broken_chord", "alberti_bass"],
+            "note_durations": ["whole", "half", "quarter", "eighth", "sixteenth"]
+        },
+        "strings": {
+            "common_patterns": ["legato_line", "pizzicato", "tremolo", "trill"],
+            "note_durations": ["whole", "half", "quarter", "eighth"]
+        },
+        "woodwinds": {
+            "common_patterns": ["melodic_line", "staccato_passage", "trill"],
+            "note_durations": ["half", "quarter", "eighth"]
+        },
+        "brass": {
+            "common_patterns": ["fanfare", "sustained_chord", "staccato_passage"],
+            "note_durations": ["whole", "half", "quarter"]
+        },
+        "percussion": {
+            "common_patterns": ["roll", "single_stroke", "accent"],
+            "note_durations": ["quarter", "eighth", "sixteenth"]
+        }
+    },
+    "dynamics": {
+        "common_gradations": ["pp", "p", "mp", "mf", "f", "ff"],
+        "crescendo": true,
+        "diminuendo": true,
+        "sforzando": true
+    },
+    "articulation": {
+        "common_types": ["legato", "staccato", "tenuto", "accent", "marcato"],
+        "slur": true,
+        "tie": true
+    },
+    "form": {
+        "common_structures": ["sonata", "rondo", "theme_and_variations", "minuet", "symphony"],
+        "sections": ["exposition", "development", "recapitulation", "coda"]
+    }
+} 

@@ -1,34 +1,56 @@
-Title: Accompaniment Test Song
+Title: Rock Test Jam
 Tempo: 120
 Time Signature: 4/4
-Key: C major
+Genre: Rock
+Key: E
 
-Measure 1 1.0 C4 mf quarter
-Measure 1 2.0 D4 mf quarter
-Measure 1 3.0 E4 mf quarter
-Measure 1 4.0 F4 mf quarter
+# Drums
+Measure 1 1.0 36 mf quarter
+Measure 1 2.0 38 mf quarter
+Measure 1 3.0 36 mf quarter
+Measure 1 4.0 38 mf quarter
+Measure 1 1.0 42 mf eighth
+Measure 1 1.5 42 mf eighth
+Measure 1 2.0 42 mf eighth
+Measure 1 2.5 42 mf eighth
+Measure 1 3.0 42 mf eighth
+Measure 1 3.5 42 mf eighth
+Measure 1 4.0 42 mf eighth
+Measure 1 4.5 42 mf eighth
+Measure 1 1.0 49 mf quarter
+Measure 2 1.0 36 mf quarter
+Measure 2 2.0 38 mf quarter
+Measure 2 3.0 36 mf quarter
+Measure 2 4.0 38 mf quarter
+Measure 2 1.0 42 mf eighth
+Measure 2 1.5 42 mf eighth
+Measure 2 2.0 42 mf eighth
+Measure 2 2.5 42 mf eighth
+Measure 2 3.0 42 mf eighth
+Measure 2 3.5 42 mf eighth
+Measure 2 4.0 42 mf eighth
+Measure 2 4.5 42 mf eighth
 
-Measure 2 1.0 G4 mf quarter
-Measure 2 2.0 A4 mf quarter
-Measure 2 3.0 G4 mf quarter
-Measure 2 4.0 F4 mf quarter
+# Bass Guitar
+Measure 1 1.0 E2 mf quarter
+Measure 1 2.0 B2 mf quarter
+Measure 1 3.0 E2 mf quarter
+Measure 1 4.0 B2 mf quarter
+Measure 2 1.0 A2 mf quarter
+Measure 2 2.0 E2 mf quarter
+Measure 2 3.0 B2 mf quarter
+Measure 2 4.0 E2 mf quarter
 
-Measure 3 1.0 E4 mf quarter
-Measure 3 2.0 D4 mf quarter
-Measure 3 3.0 C4 mf half
+# Guitar
+Measure 1 1.0 [E2, G#3, B3] mf half
+Measure 1 3.0 [E2, G#3, B3] mf half
+Measure 2 1.0 [A2, C#4, E4] mf half
+Measure 2 3.0 [B2, D#4, F#4] mf half
 
-Measure 4 1.0 C4 mf quarter
-Measure 4 2.0 E4 mf quarter
-Measure 4 3.0 G4 mf quarter
-Measure 4 4.0 C5 mf quarter
-
-Measure 5 1.0 B4 mf quarter
-Measure 5 2.0 A4 mf quarter
-Measure 5 3.0 G4 mf half
-
-Measure 6 1.0 F4 mf quarter
-Measure 6 2.0 D4 mf quarter
-Measure 6 3.0 F4 mf quarter
-Measure 6 4.0 A4 mf quarter
-
-Measure 7 1.0 G4 mf whole
+# Piano
+Measure 1 1.0 [E4, G#4, B4] mf half
+Measure 1 3.0 [E4, G#4, B4] mf half
+Measure 2 1.0 [A4, C#5, E5] mf quarter
+Measure 2 2.0 B4 mf quarter
+Measure 2 3.0 [F#4, A4, C#5] mf quarter
+Measure 2 4.0 E5 mf quarter

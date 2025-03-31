@@ -1,0 +1,90 @@
+# Song Info: Title|Tempo|TimeSig|Key|Genre
+Drum Patterns|Various|4/4|N/A|Various
+
+[intro] # Rock Driving, 120 BPM
+0.0|q|4|kick 0.0|q|4|hihat 0.5|q|4|hihat 1.0|q|4|hihat 1.5|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 2.5|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 3.5|q|4|hihat 0.0|q|4|crash
+
+[verse1] # Rock Gritty, 130 BPM
+0.0|q|4|kick 0.5|q|4|kick 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat 4.5|e|4|toms
+
+[verse2] # Rock Anthemic, 110 BPM
+0.0|q|4|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 0.0|q|4|crash
+
+[verse3] # Rock Melancholy, 90 BPM
+0.0|q|2|kick 0.0|q|2|hihat 0.5|q|2|hihat 1.0|q|2|hihat 1.5|q|2|hihat 2.0|q|3|snare 2.0|q|2|hihat 2.5|q|2|hihat 3.0|q|2|kick 3.0|q|2|hihat 3.5|q|2|hihat 0.0|q|2|crash
+
+[prechorus] # Blues Soulful, 100 BPM (Shuffle)
+0.0|q|4|kick 0.0|e|4|hihat 0.33|e|4|hihat 1.0|q|4|snare 1.0|e|4|hihat 1.33|e|4|hihat 2.0|q|4|hihat 2.33|e|4|hihat 3.0|q|4|kick 3.0|e|4|hihat 3.33|e|4|hihat
+
+[chorus] # Blues Upbeat, 140 BPM (Swung)
+0.0|q|4|kick 0.5|q|4|kick 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 3.5|e|4|toms 4.0|q|5|snare 4.0|q|4|hihat
+
+[postchorus] # Blues Dark, 80 BPM
+0.0|q|4|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat 4.5|e|4|toms
+
+[bridge] # Blues Gritty, 115 BPM (Triplet Feel)
+0.0|q|4|kick 0.0|e|4|hihat 0.33|e|4|hihat 1.0|q|5|snare 1.0|e|4|hihat 1.33|e|4|hihat 2.0|q|5|snare 2.0|e|4|hihat 2.33|e|4|hihat 3.5|q|4|kick 3.0|e|4|hihat 3.33|e|4|hihat
+
+[breakdown] # Jazz Swinging, 160 BPM
+0.0|q|4|kick 0.0|q|4|ride 1.0|q|4|ride 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|ride 4.0|q|5|snare 4.0|q|4|hihat
+
+[build] # Jazz Bebop, 200 BPM
+0.0|q|4|kick 0.0|e|4|ride 0.5|e|4|ride 1.0|e|4|ride 1.5|e|4|ride 2.0|q|5|snare 2.0|e|4|ride 2.5|e|4|ride 3.0|e|4|ride 3.5|e|4|ride 4.0|q|5|snare 4.0|e|4|ride 4.5|e|4|kick 4.5|e|4|ride
+
+[drop] # Jazz Cool, 130 BPM
+0.0|q|4|kick 0.0|q|3|hihat 1.0|q|3|hihat 2.0|q|3|snare 2.0|q|3|hihat 3.0|q|4|kick 3.0|q|3|hihat 4.0|q|3|snare 4.0|q|3|hihat
+
+[interlude] # Jazz Modal, 110 BPM
+0.0|q|4|kick 0.0|h|4|ride 1.5|q|4|snare 2.5|h|4|ride
+
+[refrain] # Funk Groovy, 115 BPM
+0.0|q|5|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|q|5|snare 2.0|s|4|hihat 2.5|q|5|kick 2.5|s|4|hihat 3.0|q|5|kick 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat
+
+[hook] # Funk Playful, 125 BPM
+0.0|q|5|kick 0.5|q|5|kick 1.0|q|4|hihat 1.5|q|5|kick 2.0|q|5|snare 2.0|q|4|hihat 2.5|q|3|snare 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat
+
+[break] # Funk Deep, 105 BPM
+0.0|q|6|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|q|5|snare 2.0|s|4|hihat 2.5|q|5|kick 2.5|s|4|hihat 3.0|q|6|kick 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat 4.0|q|5|snare 4.0|s|4|hihat
+
+[tag] # Funk Upbeat, 130 BPM
+0.0|q|5|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|q|5|snare 2.0|s|4|hihat 2.5|q|5|kick 2.5|s|4|hihat 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat 4.0|q|5|snare 4.0|s|4|hihat
+
+[solo] # Metal Heavy, 140 BPM
+0.0|q|6|kick 0.5|q|6|kick 0.0|q|4|hihat 0.5|q|4|hihat 1.0|q|4|hihat 1.5|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 2.5|q|4|hihat 3.0|q|6|kick 3.0|q|4|hihat 3.5|q|6|kick 3.5|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat 0.0|q|5|crash
+
+[interlude] # Metal Thrash, 180 BPM
+0.0|q|6|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|q|5|snare 2.0|s|4|hihat 2.5|q|5|kick 2.5|s|4|hihat 3.0|q|6|kick 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat 4.0|q|5|snare 4.0|s|4|hihat 4.25|s|4|toms 4.5|s|4|toms 4.75|s|4|toms
+
+[break] # Metal Doom, 70 BPM
+0.0|q|6|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|6|kick 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat 0.0|q|5|crash
+
+[tag] # Metal Prog, 150 BPM (7/8)
+0.0|q|5|kick 0.0|e|4|hihat 0.5|e|4|hihat 1.0|e|4|hihat 1.5|q|5|snare 2.0|q|5|kick 2.0|e|4|hihat 2.5|e|4|hihat 3.0|e|4|hihat 3.5|q|5|snare 3.5|e|4|hihat 4.0|q|5|kick 4.0|e|4|hihat 4.5|e|4|toms
+
+[intro] # Pop Bright, 120 BPM
+0.0|q|4|kick 0.0|q|4|hihat 0.5|q|4|hihat 1.0|q|4|hihat 1.5|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 2.5|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 3.5|q|4|hihat 0.0|q|4|crash 2.0|q|4|crash
+
+[verse1] # Pop Dancey, 128 BPM
+0.0|q|5|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|q|5|kick 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|q|5|kick 2.0|q|5|snare 2.0|s|4|hihat 2.25|s|4|hihat 2.5|s|4|hihat 2.75|s|4|hihat 3.0|q|5|kick 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat 4.0|q|5|snare 4.0|s|4|hihat
+
+[verse2] # Pop Soft, 90 BPM
+0.0|q|3|kick 0.0|q|3|hihat 1.0|q|3|hihat 2.0|q|3|snare 2.0|q|3|hihat 3.0|q|3|kick 3.0|q|3|hihat 4.0|q|3|snare 4.0|q|3|hihat
+
+[verse3] # Pop Upbeat, 135 BPM
+0.0|q|5|kick 0.5|q|5|kick 0.0|q|4|hihat 0.5|q|4|hihat 1.0|q|4|hihat 1.5|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 2.5|q|4|hihat 3.0|q|5|kick 3.0|q|4|hihat 3.5|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat 0.0|q|4|crash
+
+[prechorus] # Reggae Chill, 80 BPM
+0.0|q|4|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|4|hihat 3.0|q|5|kick 3.0|q|5|snare 3.0|q|4|hihat 4.0|q|4|hihat
+
+[chorus] # Reggae Roots, 85 BPM
+0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|5|kick 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat
+
+[postchorus] # Reggae Dub, 75 BPM
+0.0|q|4|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.0|q|5|snare 2.0|q|4|hihat 3.0|q|4|kick 3.0|q|4|hihat 4.0|q|5|snare 4.0|q|4|hihat
+
+[bridge] # Reggae Skanking, 140 BPM
+0.0|q|5|kick 0.5|q|5|kick 0.0|s|4|hihat 0.25|s|4|hihat 0.5|s|4|hihat 0.75|s|4|hihat 1.0|s|4|hihat 1.25|s|4|hihat 1.5|s|4|hihat 1.75|s|4|hihat 2.0|s|4|hihat 2.25|s|4|hihat 2.5|s|4|hihat 2.75|s|4|hihat 3.0|q|5|kick 3.0|q|5|snare 3.0|s|4|hihat 3.25|s|4|hihat 3.5|s|4|hihat 3.75|s|4|hihat 4.0|s|4|hihat
+
+[breakdown] # Country Steady, 110 BPM
+0.0|q|4|kick 0.0|q|4|hihat 1.0|q|4|hihat 2.
+

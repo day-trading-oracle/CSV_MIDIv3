@@ -1,0 +1,30 @@
+# Song Info: Title|Tempo|TimeSig|Key|Genre
+Lament in E Minor|60|4/4|E minor|classical
+
+[intro]
+0.0|h|2|E3 0.0|h|2|B3 2.0|q|3|G4 3.0|q|3|Fs4
+
+[verse1]
+0.0|h|2|E3 0.0|h|2|B3 0.0|e|3|E4 0.5|e|3|G4 1.0|e|3|B4 1.5|e|3|G4 2.0|q|3|Fs4 3.0|q|3|E4
+
+[verse2]
+0.0|h|2|[E3,G3,B3] 0.0|e|3|D5 0.5|e|3|E5 1.0|e|3|Fs5 1.5|e|3|E5 2.0|q|3|D5 3.0|q|3|B4
+
+[bridge]
+0.0|h|2|[E3,Fs3,A3] 0.0|e|3|Cs5 0.5|e|3|D5 1.0|e|3|E5 1.5|e|3|D5 2.0|q|3|Cs5 3.0|q|3|B4
+
+[chorus]
+0.0|w|4|[E3,G3,B3] 0.0|e|4|G5 0.5|e|4|Fs5 1.0|e|4|E5 1.5|e|4|D5 2.0|e|4|Cs5 2.5|e|4|B4 3.0|q|4|A4
+
+[breakdown]
+0.0|h|4|[D3,Fs3,A3] 0.0|e|4|Fs5 0.5|e|4|E5 1.0|e|4|D5 1.5|e|4|Cs5 2.0|q|4|B4 3.0|q|4|G4
+
+[outro]
+0.0|h|2|[E3,G3,B3] 0.0|e|2|E4 0.5|e|2|G4 1.0|e|2|B4 1.5|e|2|G4 2.0|q|2|Fs4 3.0|q|2|E4
+4.0|w|1|E3 4.0|w|1|B3 4.0|h|1|G4 6.0|h|1|E4
+
+# Notes:
+# - Time restarts at 0.0 per section.
+# - Use sustain pedal for legato.
+# - E minor scale: E, Fs, G, A, B, Cs, D.
+# - Intended for Piano; expandable to other instruments.

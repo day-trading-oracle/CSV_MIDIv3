@@ -1,0 +1,5 @@
+Title: Invalid Time Signature Test
+Tempo: 120
+Time Signature: 0/4
+Key: C major
+Genre: classical 

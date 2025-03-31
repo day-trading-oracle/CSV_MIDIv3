@@ -1,0 +1,91 @@
+# Song Template
+# This file contains the input for "Lament in E Minor"
+
+# Song Information
+Title: Lament in E Minor
+Tempo: 60
+Time Signature: 4/4
+Key: E minor
+Genre: classical
+
+# Arrangement Sections
+
+[intro]
+# Sparse and haunting opening
+0.0|2.0|p|E3           # Low, resonant root
+0.0|2.0|p|B3           # Fifth for depth
+2.0|1.0|mp|G4          # High, lonely melody note
+3.0|1.0|mp|Fs4         # Descending with tension
+
+[verse1]
+# Flowing and sorrowful melody with arpeggios
+0.0|2.0|p|E3           # Sustained bass
+0.0|2.0|p|B3
+0.0|0.5|mp|E4          # Arpeggio begins
+0.5|0.5|mp|G4
+1.0|0.5|mp|B4
+1.5|0.5|mp|G4
+2.0|1.0|mp|Fs4         # Melody continues
+3.0|1.0|mp|E4
+
+[verse2]
+# Continued development with richer harmony
+0.0|2.0|p|[E3,G3,B3]   # Chord in left hand
+0.0|0.5|mp|D5          # Higher register melody
+0.5|0.5|mp|E5
+1.0|0.5|mp|Fs5
+1.5|0.5|mp|E5
+2.0|1.0|mp|D5
+3.0|1.0|mp|B4
+
+[bridge]
+# Shifted harmony for contrast
+0.0|2.0|p|[E3,Fs3,A3]  # Minor iv chord
+0.0|0.5|mp|Cs5         # Elegant descent
+0.5|0.5|mp|D5
+1.0|0.5|mp|E5
+1.5|0.5|mp|D5
+2.0|1.0|mp|Cs5
+3.0|1.0|mp|B4
+
+[chorus]
+# Climax - Intense yet refined
+0.0|4.0|mf|[E3,G3,B3]  # Full tonic chord, stronger
+0.0|0.5|mf|G5          # Soaring melody
+0.5|0.5|mf|Fs5
+1.0|0.5|mf|E5
+1.5|0.5|mf|D5
+2.0|0.5|mf|Cs5
+2.5|0.5|mf|B4
+3.0|1.0|mf|A4          # Falling gracefully
+
+[breakdown]
+# Minimal intensity with a minor sixth chord
+0.0|2.0|mf|[D3,Fs3,A3] # Minor vi chord
+0.0|0.5|mf|Fs5         # High, piercing
+0.5|0.5|mf|E5
+1.0|0.5|mf|D5
+1.5|0.5|mf|Cs5
+2.0|1.0|mf|B4
+3.0|1.0|mf|G4
+
+[outro]
+# Resolution - Fading sadness
+0.0|2.0|p|[E3,G3,B3]   # Return to tonic
+0.0|0.5|p|E4           # Soft arpeggio
+0.5|0.5|p|G4
+1.0|0.5|p|B4
+1.5|0.5|p|G4
+2.0|1.0|p|Fs4
+3.0|1.0|p|E4
+4.0|4.0|pp|E3          # Final, delicate resolution
+4.0|4.0|pp|B3
+4.0|2.0|pp|G4
+6.0|2.0|pp|E4          # Ending on tonic
+
+# Notes:
+# - Use sustain pedal for legato and resonance.
+# - Dynamics shift from p (soft) to mf (climax) back to pp (fade).
+# - E minor scale: E, Fs, G, A, B, Cs, D.
+# - Time is in beats, starting at 0.0 within each section, aligned with 4/4 at 60 BPM.
+# - Intended for Piano; other instruments can be generated from this base.

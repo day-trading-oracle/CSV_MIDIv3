@@ -123,6 +123,51 @@ MusicMidi/
 └── README.md             # This file
 ```
 
+## Instrument Implementations
+
+The project includes several instrument implementations, each with its own characteristics and patterns:
+
+### Piano
+- MIDI Channel: 0
+- Playable Range: C2 to C7
+- Features:
+  - Handles both single notes and chords
+  - Supports various playing styles (classical, jazz, pop, rock)
+  - Dynamic velocity control based on musical markings
+
+### Guitar
+- MIDI Channel: 1
+- Playable Range: E2 to E6
+- Features:
+  - Chord strumming with realistic timing
+  - Style-specific patterns (classical, jazz, pop, rock)
+  - Support for both single notes and chords
+  - Dynamic velocity control
+
+### Bass
+- MIDI Channel: 2
+- Playable Range: C1 to C3
+- Features:
+  - Automatic lowest note selection from chords
+  - Walking bass patterns for jazz style
+  - Support for both single notes and chord root notes
+  - Dynamic velocity control
+
+### Drums
+- MIDI Channel: 9 (Standard MIDI percussion channel)
+- Playable Range: B0 to A5
+- Features:
+  - Standard drum kit sounds (kick, snare, hi-hat, crash, ride, toms)
+  - Style-specific patterns (classical, jazz, pop, rock)
+  - Automatic pattern generation based on style
+  - Dynamic velocity control
+
+Each instrument supports:
+- Dynamic markings (pp, p, mp, mf, f, ff)
+- Duration conversion (whole, half, quarter, eighth, sixteenth)
+- Error handling with fallback patterns
+- Style-specific pattern generation
+
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute, please:

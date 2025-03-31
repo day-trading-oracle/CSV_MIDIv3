@@ -1,0 +1,815 @@
+# Piano Patterns
+
+[Pop Basic]
+Genre: pop
+Time Signature: 4/4
+Notes:
+1.0: C4,E4,G4 (mf, quarter)
+2.0: G3,B3,D4 (mf, quarter)
+3.0: C4,E4,G4 (mf, quarter)
+4.0: G3,B3,D4 (mf, quarter)
+
+[Pop Syncopated]
+Genre: pop
+Time Signature: 4/4
+Notes:
+1.0: C4,E4,G4 (mf, quarter)
+1.5: C4,E4,G4 (mf, eighth)
+2.0: G3,B3,D4 (mf, quarter)
+2.5: G3,B3,D4 (mf, eighth)
+3.0: C4,E4,G4 (mf, quarter)
+3.5: C4,E4,G4 (mf, eighth)
+4.0: G3,B3,D4 (mf, quarter)
+4.5: G3,B3,D4 (mf, eighth)
+
+[Jazz Swing]
+Genre: jazz
+Time Signature: 4/4
+Notes:
+1.0: C4,E4,G4,B4 (mf, quarter)
+2.0: G3,B3,D4,F4 (mf, quarter)
+3.0: C4,E4,G4,B4 (mf, quarter)
+4.0: G3,B3,D4,F4 (mf, quarter)
+
+[Blues Basic]
+Genre: blues
+Time Signature: 4/4
+Notes:
+1.0: A3,C4,E4,G4 (mf, quarter)
+2.0: A3,C4,E4,G4 (mf, quarter)
+3.0: A3,C4,E4,G4 (mf, quarter)
+4.0: A3,C4,E4,G4 (mf, quarter)
+
+[Classical Arpeggio]
+Genre: classical
+Time Signature: 4/4
+Notes:
+1.0: C4,E4,G4 (mf, quarter)
+2.0: G3,B3,D4 (mf, quarter)
+3.0: C4,E4,G4 (mf, quarter)
+4.0: G3,B3,D4 (mf, quarter) 
+
+[Piano Swing]
+Genre: jazz
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, quarter)
+1.0: [D4,F4,A4] (mf, quarter)
+2.0: [E4,G4,B4] (mf, quarter)
+
+[Piano Bebop]
+Genre: jazz
+Time Signature: 4/4
+Notes:
+0.0: F4 (f, eighth)
+0.5: G4 (f, eighth)
+1.0: A4 (f, eighth)
+1.5: C5 (f, eighth)
+2.0: D5 (f, eighth)
+
+[Piano Cool]
+Genre: jazz
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mp, half)
+2.0: [G3,As3,D4] (mp, half)
+
+[Piano Modal]
+Genre: jazz
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, whole)
+2.0: [D3,E3,G3] (mf, half)
+
+[Piano Rock Drive]
+Genre: rock
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (mf, half)
+2.0: [E3,Gs3,B3] (mf, half)
+
+[Piano Rock Grit]
+Genre: rock
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Rock Anthem]
+Genre: rock
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, whole)
+2.0: [G3,B3,D4] (mf, half)
+
+[Piano Rock Sad]
+Genre: rock
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mp, half)
+2.0: [D3,E3,G3] (mp, half)
+
+[Piano Blues Soul]
+Genre: blues
+Time Signature: 4/4
+Notes:
+0.0: A3 (mf, quarter)
+1.0: Cs4 (mf, quarter)
+2.0: E4 (mf, quarter)
+3.0: G4 (mf, quarter)
+
+[Piano Blues Up]
+Genre: blues
+Time Signature: 4/4
+Notes:
+0.0: E3 (f, quarter)
+0.5: Gs3 (f, quarter)
+1.0: B3 (f, quarter)
+1.5: E4 (f, quarter)
+
+[Piano Blues Dark]
+Genre: blues
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, half)
+2.0: [D3,E3,G3] (mf, half)
+
+[Piano Blues Grit]
+Genre: blues
+Time Signature: 4/4
+Notes:
+0.0: G3 (f, quarter)
+1.0: B3 (f, quarter)
+2.0: D4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Funk Groove]
+Genre: funk
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, quarter)
+1.0: [G3,As3,D4] (f, quarter)
+2.0: [G3,B3,D4] (f, quarter)
+
+[Piano Funk Play]
+Genre: funk
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, eighth)
+0.5: Cs4 (f, eighth)
+1.0: E4 (f, eighth)
+1.5: Fs4 (f, eighth)
+2.0: A4 (f, eighth)
+
+[Piano Funk Deep]
+Genre: funk
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (mf, half)
+2.0: [E3,Fs3,A3] (mf, half)
+
+[Piano Funk Up]
+Genre: funk
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Metal Heavy]
+Genre: metal
+Time Signature: 4/4
+Notes:
+0.0: D3 (ff, quarter)
+0.5: Fs3 (ff, quarter)
+1.0: A3 (ff, quarter)
+1.5: D4 (ff, quarter)
+
+[Piano Metal Thrash]
+Genre: metal
+Time Signature: 4/4
+Notes:
+0.0: B3 (f, eighth)
+0.5: Ds4 (f, eighth)
+1.0: Fs4 (f, eighth)
+1.5: B4 (f, eighth)
+
+[Piano Metal Doom]
+Genre: metal
+Time Signature: 4/4
+Notes:
+0.0: [Fs3,A3,Cs4] (mf, whole)
+2.0: [Fs3,Gs3,B3] (mf, half)
+
+[Piano Metal Prog]
+Genre: metal
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.5: [E3,Fs3,A3] (f, quarter)
+3.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano Pop Bright]
+Genre: pop
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (mf, half)
+2.0: [F3,A3,C4] (mf, half)
+
+[Piano Pop Dance]
+Genre: pop
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (f, quarter)
+1.0: [C4,D4,F4] (f, quarter)
+2.0: [C4,E4,G4] (f, quarter)
+
+[Piano Pop Soft]
+Genre: pop
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mp, half)
+2.0: [G3,As3,D4] (mp, half)
+
+[Piano Pop Upbeat]
+Genre: pop
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Reggae Chill]
+Genre: reggae
+Time Signature: 4/4
+Notes:
+0.0: [A3,Cs4,E4] (mf, quarter)
+2.0: [A3,Cs4,E4] (mf, quarter)
+
+[Piano Reggae Roots]
+Genre: reggae
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, half)
+2.0: [D3,E3,G3] (mf, half)
+
+[Piano Reggae Dub]
+Genre: reggae
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, whole)
+2.0: [G3,As3,D4] (mf, half)
+
+[Piano Reggae Skank]
+Genre: reggae
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, eighth)
+0.5: [E3,Gs3,B3] (f, eighth)
+1.0: [E3,Fs3,A3] (f, eighth)
+1.5: [E3,Fs3,A3] (f, eighth)
+
+[Piano Country Steady]
+Genre: country
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, half)
+2.0: [G3,B3,D4] (mf, half)
+
+[Piano Country Up]
+Genre: country
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Country Tender]
+Genre: country
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mp, half)
+2.0: [D3,E3,G3] (mp, half)
+
+[Piano Country Drive]
+Genre: country
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.0: [E3,Fs3,A3] (f, quarter)
+2.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano HipHop Grit]
+Genre: hip-hop
+Time Signature: 4/4
+Notes:
+0.0: B3 (f, quarter)
+1.0: Ds4 (f, quarter)
+2.0: Fs4 (f, quarter)
+3.0: B4 (f, quarter)
+
+[Piano HipHop Smooth]
+Genre: hip-hop
+Time Signature: 4/4
+Notes:
+0.0: [Fs3,A3,Cs4] (mf, half)
+2.0: [Fs3,Gs3,B3] (mf, half)
+
+[Piano HipHop Trap]
+Genre: hip-hop
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (f, eighth)
+0.5: [C4,D4,F4] (f, eighth)
+1.0: [C4,E4,G4] (f, eighth)
+1.5: [C4,D4,F4] (f, eighth)
+
+[Piano HipHop Funk]
+Genre: hip-hop
+Time Signature: 4/4
+Notes:
+0.0: G3 (f, quarter)
+1.0: B3 (f, quarter)
+2.0: D4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Punk Fast]
+Genre: punk
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.0: [E3,Gs3,B3] (f, quarter)
+2.0: [E3,Fs3,A3] (f, quarter)
+
+[Piano Punk Chaos]
+Genre: punk
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, eighth)
+0.5: Cs4 (f, eighth)
+1.0: E4 (f, eighth)
+1.5: Fs4 (f, eighth)
+
+[Piano Punk Melody]
+Genre: punk
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, quarter)
+1.0: [G3,As3,D4] (f, quarter)
+2.0: [G3,B3,D4] (f, quarter)
+
+[Piano Punk Dark]
+Genre: punk
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (f, half)
+2.0: [D3,E3,G3] (f, half)
+
+[Piano Disco Funk]
+Genre: disco
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Disco Smooth]
+Genre: disco
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, half)
+2.0: [C4,D4,F4] (mf, half)
+
+[Piano Disco Bright]
+Genre: disco
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, quarter)
+1.0: [G3,As3,D4] (f, quarter)
+2.0: [G3,B3,D4] (f, quarter)
+
+[Piano Disco Retro]
+Genre: disco
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, eighth)
+0.5: Cs4 (f, eighth)
+1.0: E4 (f, eighth)
+1.5: Fs4 (f, eighth)
+
+[Piano RB Soul]
+Genre: r&b
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, half)
+2.0: [G3,As3,D4] (mf, half)
+
+[Piano RB Slick]
+Genre: r&b
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, quarter)
+1.0: [D3,E3,G3] (mf, quarter)
+2.0: [D3,Fs3,A3] (mf, quarter)
+
+[Piano RB Deep]
+Genre: r&b
+Time Signature: 4/4
+Notes:
+0.0: E3 (mf, eighth)
+0.5: Gs3 (mf, eighth)
+1.0: B3 (mf, eighth)
+1.5: E4 (mf, eighth)
+
+[Piano RB Groove]
+Genre: r&b
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Prog Complex]
+Genre: prog rock
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.5: [E3,Fs3,A3] (f, quarter)
+3.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano Prog Atmos]
+Genre: prog rock
+Time Signature: 4/4
+Notes:
+0.0: [B3,Ds4,Fs4] (mf, whole)
+2.0: [B3,E4,G4] (mf, half)
+
+[Piano Prog Tense]
+Genre: prog rock
+Time Signature: 4/4
+Notes:
+0.0: [Fs3,A3,Cs4] (f, quarter)
+1.0: [Fs3,Gs3,B3] (f, quarter)
+2.0: [Fs3,A3,Cs4] (f, quarter)
+
+[Piano Prog Majestic]
+Genre: prog rock
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, half)
+2.0: [C4,D4,F4] (mf, half)
+
+[Piano Ska Bounce]
+Genre: ska
+Time Signature: 4/4
+Notes:
+0.0: [A3,Cs4,E4] (f, eighth)
+0.5: [A3,Cs4,E4] (f, eighth)
+1.0: [A3,B3,D4] (f, eighth)
+1.5: [A3,B3,D4] (f, eighth)
+
+[Piano Ska Skank]
+Genre: ska
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (f, quarter)
+1.0: [D3,E3,G3] (f, quarter)
+2.0: [D3,Fs3,A3] (f, quarter)
+
+[Piano Ska Bright]
+Genre: ska
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, eighth)
+0.5: [G3,As3,D4] (f, eighth)
+1.0: [G3,B3,D4] (f, eighth)
+
+[Piano Ska Raw]
+Genre: ska
+Time Signature: 4/4
+Notes:
+0.0: E3 (f, quarter)
+1.0: Gs3 (f, quarter)
+2.0: B3 (f, quarter)
+3.0: E4 (f, quarter)
+
+[Piano Classical Majestic]
+Genre: classical
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, half)
+2.0: [C4,D4,F4] (mf, half)
+
+[Piano Classical Tense]
+Genre: classical
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, whole)
+2.0: [G3,As3,D4] (mf, half)
+
+[Piano Classical Flow]
+Genre: classical
+Time Signature: 4/4
+Notes:
+0.0: D3 (mf, eighth)
+0.5: Fs3 (mf, eighth)
+1.0: A3 (mf, eighth)
+1.5: D4 (mf, eighth)
+
+[Piano Classical Bold]
+Genre: classical
+Time Signature: 4/4
+Notes:
+0.0: [A3,Cs4,E4] (f, quarter)
+1.0: [A3,B3,D4] (f, quarter)
+2.0: [A3,Cs4,E4] (f, quarter)
+
+[Piano Electronic Pulse]
+Genre: electronic
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Electronic Glitch]
+Genre: electronic
+Time Signature: 4/4
+Notes:
+0.0: C4 (f, eighth)
+0.5: E4 (f, eighth)
+1.0: G4 (f, eighth)
+1.5: C5 (f, eighth)
+
+[Piano Electronic Ambient]
+Genre: electronic
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mp, whole)
+2.0: [G3,As3,D4] (mp, half)
+
+[Piano Electronic Drive]
+Genre: electronic
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.0: [E3,Fs3,A3] (f, quarter)
+2.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano Folk Warm]
+Genre: folk
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, half)
+2.0: [G3,As3,D4] (mf, half)
+
+[Piano Folk Lively]
+Genre: folk
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Folk Soft]
+Genre: folk
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mp, half)
+2.0: [D3,E3,G3] (mp, half)
+
+[Piano Folk Up]
+Genre: folk
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (f, quarter)
+1.0: [C4,D4,F4] (f, quarter)
+2.0: [C4,E4,G4] (f, quarter)
+
+[Piano Gospel Joy]
+Genre: gospel
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (f, quarter)
+1.0: [C4,D4,F4] (f, quarter)
+2.0: [C4,E4,G4] (f, quarter)
+
+[Piano Gospel Soul]
+Genre: gospel
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (mf, half)
+2.0: [F3,G3,B3] (mf, half)
+
+[Piano Gospel Bright]
+Genre: gospel
+Time Signature: 4/4
+Notes:
+0.0: G3 (f, eighth)
+0.5: B3 (f, eighth)
+1.0: D4 (f, eighth)
+1.5: G4 (f, eighth)
+
+[Piano Gospel Warm]
+Genre: gospel
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, quarter)
+1.0: [D3,E3,G3] (mf, quarter)
+2.0: [D3,Fs3,A3] (mf, quarter)
+
+[Piano Bluegrass Fast]
+Genre: bluegrass
+Time Signature: 4/4
+Notes:
+0.0: G3 (f, eighth)
+0.5: B3 (f, eighth)
+1.0: D4 (f, eighth)
+1.5: G4 (f, eighth)
+
+[Piano Bluegrass Play]
+Genre: bluegrass
+Time Signature: 4/4
+Notes:
+0.0: [A3,Cs4,E4] (f, quarter)
+1.0: [A3,B3,D4] (f, quarter)
+2.0: [A3,Cs4,E4] (f, quarter)
+
+[Piano Bluegrass Steady]
+Genre: bluegrass
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, half)
+2.0: [D3,E3,G3] (mf, half)
+
+[Piano Bluegrass Lively]
+Genre: bluegrass
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.0: [E3,Fs3,A3] (f, quarter)
+2.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano Soul Groove]
+Genre: soul
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Soul Deep]
+Genre: soul
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (mf, half)
+2.0: [G3,As3,D4] (mf, half)
+
+[Piano Soul Upbeat]
+Genre: soul
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, eighth)
+0.5: Cs4 (f, eighth)
+1.0: E4 (f, eighth)
+1.5: Fs4 (f, eighth)
+
+[Piano Soul Smooth]
+Genre: soul
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, quarter)
+1.0: [C4,D4,F4] (mf, quarter)
+2.0: [C4,E4,G4] (mf, quarter)
+
+[Piano Indie Dream]
+Genre: indie
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (mp, whole)
+2.0: [E3,Fs3,A3] (mp, half)
+
+[Piano Indie Edge]
+Genre: indie
+Time Signature: 4/4
+Notes:
+0.0: B3 (f, quarter)
+1.0: Ds4 (f, quarter)
+2.0: Fs4 (f, quarter)
+3.0: B4 (f, quarter)
+
+[Piano Indie Quirky]
+Genre: indie
+Time Signature: 4/4
+Notes:
+0.0: [Fs3,A3,Cs4] (f, eighth)
+0.5: [Fs3,Gs3,B3] (f, eighth)
+1.0: [Fs3,A3,Cs4] (f, eighth)
+
+[Piano Indie Moody]
+Genre: indie
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, half)
+2.0: [D3,E3,G3] (mf, half)
+
+[Piano Fusion Funk]
+Genre: fusion
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, quarter)
+1.0: [G3,As3,D4] (f, quarter)
+2.0: [G3,B3,D4] (f, quarter)
+
+[Piano Fusion Jazz]
+Genre: fusion
+Time Signature: 4/4
+Notes:
+0.0: [C4,E4,G4] (mf, eighth)
+0.5: [C4,D4,F4] (mf, eighth)
+1.0: [C4,E4,G4] (mf, eighth)
+
+[Piano Fusion Drive]
+Genre: fusion
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Fusion Exp]
+Genre: fusion
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, half)
+2.0: [F3,G3,B3] (f, half)
+
+[Piano Afrobeat Rhythm]
+Genre: afrobeat
+Time Signature: 4/4
+Notes:
+0.0: [F3,A3,C4] (f, quarter)
+1.0: [F3,G3,B3] (f, quarter)
+2.0: [F3,A3,C4] (f, quarter)
+
+[Piano Afrobeat Warm]
+Genre: afrobeat
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, eighth)
+0.5: [D3,E3,G3] (mf, eighth)
+1.0: [D3,Fs3,A3] (mf, eighth)
+
+[Piano Afrobeat Pulse]
+Genre: afrobeat
+Time Signature: 4/4
+Notes:
+0.0: [G3,B3,D4] (f, half)
+2.0: [G3,As3,D4] (f, half)
+
+[Piano Afrobeat Dance]
+Genre: afrobeat
+Time Signature: 4/4
+Notes:
+0.0: A3 (f, quarter)
+1.0: Cs4 (f, quarter)
+2.0: E4 (f, quarter)
+3.0: Fs4 (f, quarter)
+
+[Piano Grunge Dirty]
+Genre: grunge
+Time Signature: 4/4
+Notes:
+0.0: [E3,Gs3,B3] (f, quarter)
+1.0: [E3,Fs3,A3] (f, quarter)
+2.0: [E3,Gs3,B3] (f, quarter)
+
+[Piano Grunge Tense]
+Genre: grunge
+Time Signature: 4/4
+Notes:
+0.0: B3 (f, eighth)
+0.5: Ds4 (f, eighth)
+1.0: Fs4 (f, eighth)
+1.5: B4 (f, eighth)
+
+[Piano Grunge Sludge]
+Genre: grunge
+Time Signature: 4/4
+Notes:
+0.0: [Fs3,A3,Cs4] (mf, whole)
+2.0: [Fs3,Gs3,B3] (mf, half)
+
+[Piano Grunge Melody]
+Genre: grunge
+Time Signature: 4/4
+Notes:
+0.0: [D3,Fs3,A3] (mf, quarter)
+1.0: [D3,E3,G3] (mf, quarter)
+2.0: [D3,Fs3,A3] (mf, quarter)

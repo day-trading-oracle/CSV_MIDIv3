@@ -1,0 +1,7 @@
+Title: Pop Ballad in D
+Tempo: 72
+Time Signature: 6/8
+Key: D
+Genre: pop
+
+# Measures will be generated automatically based on the key 

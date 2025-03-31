@@ -1,0 +1,57 @@
+Input Format (Text File)
+-----------------------
+Header Information:
+------------------
+Title: Pattern/Song Name
+Tempo: X                      # BPM (20-240)
+Time Signature: Y/Z           # e.g., 4/4, 3/4, 6/8
+Genre: Genre Name             # e.g., Rock, Jazz, Funk
+
+Measure Format:
+--------------
+Each line follows the format:
+Measure X Y.Z instrument_element dynamic duration
+
+Where:
+- X: Measure number (1-based, typically 1 for single-bar patterns)
+- Y.Z: Start time in beats (1.0 = beat 1, 1.5 = eighth after 1, 1.25 = sixteenth after 1)
+- instrument_element: Note or drum type (varies by instrument, see below)
+- dynamic: Dynamic marking (pp, p, mp, mf, f, ff)
+- duration: Note duration (whole, half, quarter, eighth, sixteenth)
+
+Output Format (MIDI Data Structure)
+---------------------------------
+{
+    'title': 'Pattern/Song Name',
+    'tempo': X,
+    'time_signature': 'Y/Z',
+    'genre': 'Genre Name',
+    'measures': [
+        [  # Measure 1
+            {
+                'pitch': N,       # MIDI note number (varies by instrument)
+                'duration': D,    # Duration in quarter notes (e.g., 1.0 = quarter)
+                'start': S,       # Start time in quarter notes (e.g., 0.0 = beat 1)
+                'velocity': V     # MIDI velocity (0-127)
+            },
+            # Additional notes/hits as needed
+        ]
+    ]
+}
+
+Dynamics Mapping
+---------------
+pp: 20
+p: 40
+mp: 60
+mf: 80
+f: 100
+ff: 120
+
+Duration Mapping
+---------------
+whole: 4.0
+half: 2.0
+quarter: 1.0
+eighth: 0.5
+sixteenth: 0.25
