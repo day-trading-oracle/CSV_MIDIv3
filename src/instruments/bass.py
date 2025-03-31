@@ -1,335 +1,225 @@
-"""
-Bass instrument implementation with bass-specific music theory and patterns.
-"""
+"""Bass instrument implementation."""
 
-from typing import Dict, List, Optional, Tuple
-from .base import BaseInstrument, NoteData
-from ..utils import normalize_velocity
-import logging
-import random
-
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from typing import List, Any, Tuple, Dict
+from .base import BaseInstrument
+from ..core.song_parser import SongData
 
 class Bass(BaseInstrument):
-    """Bass instrument implementation with bass-specific patterns and theory"""
+    """Bass instrument class."""
     
-    def __init__(self, program: int = 32, velocity_range: Tuple[int, int] = (30, 120)):
-        """Initialize the bass instrument.
+    # MIDI note numbers for basic bass notes (C major scale)
+    CHORD_NOTES = {
+        'C': [36],    # C2
+        'Dm': [38],   # D2
+        'Em': [40],   # E2
+        'F': [41],    # F2
+        'G': [43],    # G2
+        'Am': [45],   # A2
+        'Bdim': [47], # B2
+    }
+    
+    # Standard patterns by style
+    PATTERNS = {
+        'classical': {
+            'rhythm': [(0, 1.0), (2, 1.0)],  # Half notes
+            'velocity': 80
+        },
+        'jazz': {
+            'rhythm': [(0, 0.5), (1, 0.5), (2, 0.5), (3, 0.5)],  # Walking bass
+            'velocity': 90
+        },
+        'pop': {
+            'rhythm': [(0, 0.5), (2, 0.5)],  # Common pop pattern
+            'velocity': 85
+        },
+        'rock': {
+            'rhythm': [(0, 0.5), (1.5, 0.5), (2, 0.5), (3, 0.5)],  # Rock pattern
+            'velocity': 95
+        }
+    }
+    
+    def __init__(self, midi_channel: int = 2, velocity: int = 100):
+        """Initialize the bass.
         
         Args:
-            program: MIDI program number (default: 32 for Acoustic Bass)
-            velocity_range: Min/max velocity values for note dynamics
+            midi_channel: MIDI channel number (0-15)
+            velocity: Default note velocity (0-127)
         """
-        articulations = {
-            'staccato': {'duration_multiplier': 0.5},
-            'legato': {'duration_multiplier': 1.2},
-            'pizzicato': {'velocity_multiplier': 1.2},
-            'slap': {'velocity_multiplier': 1.5, 'duration_multiplier': 0.8}
-        }
-        super().__init__(program, "Bass", velocity_range, articulations)
-        
-        # Bass-specific note ranges (in MIDI note numbers)
-        self.range_by_style = {
-            'classical': (28, 55),    # E1 to G3
-            'jazz': (24, 55),         # C1 to G3
-            'rock': (28, 55),         # E1 to G3
-            'funk': (28, 55),         # E1 to G3
-            'pop': (28, 55)           # E1 to G3
-        }
-        
-        # Bass-specific patterns
-        self.patterns = {
-            'walking': self._create_walking_pattern,
-            'rock': self._create_rock_pattern,
-            'funk': self._create_funk_pattern,
-            'jazz': self._create_jazz_pattern,
-            'pop': self._create_pop_pattern
-        }
-        
-        # Bass-specific chord progressions
-        self.chord_progressions = {
-            'classical': [
-                [0, 4, 7],    # C major
-                [2, 5, 9],    # D minor
-                [4, 7, 11],   # E minor
-                [5, 9, 0],    # F major
-                [7, 11, 2],   # G major
-                [9, 0, 4],    # A minor
-                [11, 2, 5]    # B diminished
-            ],
-            'jazz': [
-                [0, 4, 7, 11],    # Cmaj7
-                [2, 5, 9, 0],     # Dm7
-                [4, 7, 11, 2],    # Em7
-                [5, 9, 0, 4],     # Fmaj7
-                [7, 11, 2, 5],    # G7
-                [9, 0, 4, 7],     # Am7
-                [11, 2, 5, 9]     # Bm7b5
-            ],
-            'pop': [
-                [0, 4, 7],    # C major
-                [5, 9, 0],    # F major
-                [7, 11, 2],   # G major
-                [0, 4, 7]     # C major
-            ]
-        }
-        
-        # Store the current song's pattern variation
-        self.current_song_variation = None
+        super().__init__("Bass", midi_channel, velocity)
     
-    def get_playable_range(self) -> Tuple[int, int]:
-        """Get the playable range for the bass instrument."""
-        return (24, 55)  # C1 to G3
+    def get_playable_range(self) -> tuple[int, int]:
+        """Get the playable MIDI note range for bass.
+        
+        Returns:
+            Tuple of (lowest_note, highest_note) in MIDI note numbers
+        """
+        return (24, 48)  # C1 to C3
     
-    def get_chord_progression(self, genre: str) -> List[List[int]]:
-        """Get the chord progression for a specific genre.
+    def _create_note_event(self, note: int, time: float, duration: float, velocity: int = None) -> Tuple[int, float, float]:
+        """Create a note event tuple.
         
         Args:
-            genre: The genre to get the progression for
+            note: MIDI note number
+            time: Start time in beats
+            duration: Duration in beats
+            velocity: Note velocity (0-127)
             
         Returns:
-            List of chord definitions (each chord is a list of intervals)
-            
-        Raises:
-            ValueError: If genre is not supported
+            Tuple of (note, time, duration)
         """
-        if genre not in self.chord_progressions:
-            raise ValueError(f"Unsupported genre: {genre}")
-        return self.chord_progressions[genre]
+        return (note, time, duration)
     
-    def _create_walking_pattern(self, chord: List[int], duration: float) -> List[NoteData]:
-        """Create a walking bass pattern."""
-        pattern = []
-        # Adjust number of steps based on duration
-        steps = [0, 2, 4, 5, 7, 9, 11, 12]  # Scale degrees
-        step_duration = duration / len(steps)
-        
-        for i, step in enumerate(steps):
-            note = NoteData(
-                pitch=chord[0] + step,  # Root note + scale degree
-                duration=step_duration,
-                start=i * step_duration,
-                velocity=80
-            )
-            pattern.append(note)
-        
-        return pattern
-    
-    def _create_rock_pattern(self, chord: List[int], duration: float) -> List[NoteData]:
-        """Create a rock bass pattern."""
-        pattern = []
-        # Root note on 1 and 3
-        pattern.append(NoteData(pitch=chord[0], duration=duration/2, start=0, velocity=90))
-        pattern.append(NoteData(pitch=chord[0], duration=duration/2, start=duration/2, velocity=90))
-        return pattern
-    
-    def _create_funk_pattern(self, chord: List[int], duration: float) -> List[NoteData]:
-        """Create a funk bass pattern."""
-        pattern = []
-        # Syncopated pattern with root and fifth
-        pattern.append(NoteData(pitch=chord[0], duration=duration/4, start=0, velocity=100))
-        pattern.append(NoteData(pitch=chord[0] + 7, duration=duration/4, start=duration/4, velocity=90))
-        pattern.append(NoteData(pitch=chord[0], duration=duration/4, start=duration/2, velocity=100))
-        pattern.append(NoteData(pitch=chord[0] + 7, duration=duration/4, start=3*duration/4, velocity=90))
-        return pattern
-    
-    def _create_jazz_pattern(self, chord: List[int], duration: float) -> List[NoteData]:
-        """Create a jazz bass pattern."""
-        pattern = []
-        # Walking pattern with chord tones
-        steps = [chord[0], chord[1], chord[2], chord[0]]  # Root, third, fifth, root
-        step_duration = duration / len(steps)
-        
-        for i, pitch in enumerate(steps):
-            note = NoteData(
-                pitch=pitch,
-                duration=step_duration,
-                start=i * step_duration,
-                velocity=85
-            )
-            pattern.append(note)
-        
-        return pattern
-    
-    def _create_pop_pattern(self, chord: List[int], duration: float) -> List[NoteData]:
-        """Create a pop bass pattern."""
-        pattern = []
-        # Simple root-fifth pattern
-        pattern.append(NoteData(pitch=chord[0], duration=duration/2, start=0, velocity=85))
-        pattern.append(NoteData(pitch=chord[0] + 7, duration=duration/2, start=duration/2, velocity=85))
-        return pattern
-    
-    def convert_to_4_4(self, duration: float, original_time_sig: str) -> float:
-        """Convert duration from original time signature to 4/4.
+    def _parse_note(self, note_str: str) -> List[int]:
+        """Parse a note string into MIDI note numbers.
         
         Args:
-            duration: Original duration in beats
-            original_time_sig: Original time signature (e.g., '3/4', '6/8')
+            note_str: Note string (e.g., "C4", "Fs4", "[E3,G3,B3]")
             
         Returns:
-            Duration converted to 4/4 time
+            List of MIDI note numbers
         """
-        if original_time_sig in self.time_signature_factors:
-            return duration * self.time_signature_factors[original_time_sig]
-        return duration  # Default to no conversion if time signature not found
-
-    def generate_pattern(
-        self,
-        song_data: Dict,
-        style: Optional[str] = None,
-        genre: Optional[str] = None,
-        variation: Optional[int] = None,
-        is_new_song: bool = False,
-        **kwargs
-    ) -> List[Dict]:
-        """
-        Generate a bass pattern based on the song data.
+        # Handle chord notation - for bass, we only take the lowest note
+        if note_str.startswith('[') and note_str.endswith(']'):
+            chord_notes = note_str[1:-1].split(',')
+            # Parse all notes and take the lowest one
+            midi_notes = [self._parse_single_note(note.strip()) for note in chord_notes]
+            return [min(midi_notes)]
+        
+        # Handle single note
+        return [self._parse_single_note(note_str)]
+    
+    def _parse_single_note(self, note_str: str) -> int:
+        """Parse a single note string into MIDI note number.
         
         Args:
-            song_data: The song data to generate from
-            style: The style of pattern to generate
-            genre: The genre of music
-            variation: Specific variation to use (None for random)
-            is_new_song: Whether this is a new song generation (will select new variation)
-            **kwargs: Additional arguments for pattern generation
+            note_str: Note string (e.g., "C4", "Fs4")
             
         Returns:
-            List of note events
+            MIDI note number
         """
-        pattern = []
-        measures = song_data.get('measures', [])
-        original_time_sig = song_data.get('time_signature', '4/4')
+        # Handle sharp notes
+        if 's' in note_str:
+            note_name = note_str.split('s')[0].upper()
+            octave = int(note_str[-1])
+            base_note = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}[note_name]
+            return base_note + 1 + (octave + 1) * 12  # Add 1 for sharp
         
-        # Select pattern variation for new songs
-        if is_new_song or self.current_song_variation is None:
-            # Define possible variations for bass patterns
-            variations = [
-                {
-                    'style': 'root',      # Root notes only
-                    'rhythm': 'quarter',   # Quarter note rhythm
-                    'velocity': 90
-                },
-                {
-                    'style': 'walking',    # Walking bass line
-                    'rhythm': 'eighth',    # Eighth note rhythm
-                    'velocity': 85
-                },
-                {
-                    'style': 'groove',     # Groove-based pattern
-                    'rhythm': 'sixteenth', # Sixteenth note rhythm
-                    'velocity': 80
-                }
-            ]
-            self.current_song_variation = random.choice(variations)
-            logger.info(f"Selected new variation for bass: {self.current_song_variation}")
+        # Handle regular notes
+        note_name = note_str[0].upper()
+        octave = int(note_str[-1])
+        base_note = {'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11}[note_name]
+        return base_note + (octave + 1) * 12
+    
+    def _note_to_midi(self, note: str) -> int:
+        """Convert note name to MIDI note number.
         
-        # Use the current song's variation
-        pattern_config = self.current_song_variation
-        
-        logger.info(f"Generating bass pattern for genre: {genre or 'rock'}")
-        logger.info(f"Using pattern configuration: {pattern_config}")
-        
-        current_time = 0
-        for measure in measures:
-            chords = measure.get('chords', [])
-            melody = measure.get('melody', [])
+        Args:
+            note: Note name (e.g., "E3")
             
-            if not chords and not melody:
-                continue
-                
-            # Handle chords based on pattern variation
-            if chords:
-                for chord in chords:
-                    converted_start = self.convert_to_4_4(chord['start'], original_time_sig)
-                    
-                    if pattern_config['style'] == 'root':
-                        # Root notes only
-                        note = NoteData(
-                            pitch=chord['root'],
-                            duration=chord['duration'],
-                            start=current_time + converted_start,
-                            velocity=normalize_velocity(pattern_config['velocity']),
-                            articulation='normal',
-                            original_time_sig=original_time_sig
-                        )
-                        note = self.get_note_adjustments(note, style, genre, original_time_sig)
-                        pattern.append({
-                            'pitch': note.pitch,
-                            'duration': note.duration,
-                            'start': note.start,
-                            'velocity': note.velocity,
-                            'is_rest': note.is_rest,
-                            'original_time_sig': note.original_time_sig
-                        })
-                    elif pattern_config['style'] == 'walking':
-                        # Walking bass line
-                        chord_notes = self.get_chord_notes(chord['root'], chord['type'])
-                        for i, pitch in enumerate(chord_notes):
-                            note = NoteData(
-                                pitch=pitch,
-                                duration=chord['duration'] / len(chord_notes),
-                                start=current_time + converted_start + (i * 0.2),
-                                velocity=normalize_velocity(pattern_config['velocity']),
-                                articulation='normal',
-                                original_time_sig=original_time_sig
-                            )
-                            note = self.get_note_adjustments(note, style, genre, original_time_sig)
-                            pattern.append({
-                                'pitch': note.pitch,
-                                'duration': note.duration,
-                                'start': note.start,
-                                'velocity': note.velocity,
-                                'is_rest': note.is_rest,
-                                'original_time_sig': note.original_time_sig
-                            })
-                    else:  # groove
-                        # Groove-based pattern
-                        chord_notes = self.get_chord_notes(chord['root'], chord['type'])
-                        for i, pitch in enumerate(chord_notes):
-                            note = NoteData(
-                                pitch=pitch,
-                                duration=chord['duration'] / len(chord_notes),
-                                start=current_time + converted_start + (i * 0.1),
-                                velocity=normalize_velocity(pattern_config['velocity']),
-                                articulation='normal',
-                                original_time_sig=original_time_sig
-                            )
-                            note = self.get_note_adjustments(note, style, genre, original_time_sig)
-                            pattern.append({
-                                'pitch': note.pitch,
-                                'duration': note.duration,
-                                'start': note.start,
-                                'velocity': note.velocity,
-                                'is_rest': note.is_rest,
-                                'original_time_sig': note.original_time_sig
-                            })
-            
-            # Handle melody
-            if melody:
-                for note_data in melody:
-                    converted_start = self.convert_to_4_4(note_data['start'], original_time_sig)
-                    note = NoteData(
-                        pitch=note_data['pitch'],
-                        duration=note_data['duration'],
-                        start=current_time + converted_start,
-                        velocity=normalize_velocity(note_data['velocity']),
-                        articulation='normal',
-                        original_time_sig=original_time_sig
-                    )
-                    note = self.get_note_adjustments(note, style, genre, original_time_sig)
-                    pattern.append({
-                        'pitch': note.pitch,
-                        'duration': note.duration,
-                        'start': note.start,
-                        'velocity': note.velocity,
-                        'is_rest': note.is_rest,
-                        'original_time_sig': note.original_time_sig
-                    })
-            
-            # Move to next measure
-            current_time += self.convert_to_4_4(4.0, original_time_sig)
+        Returns:
+            MIDI note number
+        """
+        notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+        note_name = note[:-1]
+        octave = int(note[-1])
+        note_index = notes.index(note_name)
+        return 12 * (octave + 1) + note_index
+    
+    def _dynamic_to_velocity(self, dynamic: str) -> int:
+        """Convert dynamic marking to velocity.
         
-        logger.info(f"Generated {len(pattern)} bass notes")
-        return pattern 
+        Args:
+            dynamic: Dynamic marking (pp, p, mp, mf, f, ff)
+            
+        Returns:
+            MIDI velocity (0-127)
+        """
+        dynamics = {
+            'pp': 20,
+            'p': 40,
+            'mp': 60,
+            'mf': 80,
+            'f': 100,
+            'ff': 120
+        }
+        return dynamics.get(dynamic.lower(), 80)
+    
+    def _duration_to_beats(self, duration: str) -> float:
+        """Convert duration string to beats.
+        
+        Args:
+            duration: Duration string (whole, half, quarter, eighth, sixteenth)
+            
+        Returns:
+            Duration in beats
+        """
+        durations = {
+            'whole': 4.0,
+            'half': 2.0,
+            'quarter': 1.0,
+            'eighth': 0.5,
+            'sixteenth': 0.25
+        }
+        return durations.get(duration.lower(), 1.0)
+    
+    def generate_pattern(self, chord: str, style: str = "classical", song_data: SongData = None) -> List[dict]:
+        """Generate a bass pattern based on the song data.
+        
+        Args:
+            chord: Current chord (e.g., "C", "Am", "F#m")
+            style: Musical style/genre
+            song_data: Song data containing notes and timing
+            
+        Returns:
+            List of MIDI note events
+        """
+        try:
+            pattern = []
+            
+            # Get style pattern for default rhythm if no song data provided
+            style_pattern = self.PATTERNS.get(style.lower(), self.PATTERNS['classical'])
+            base_velocity = style_pattern.get('velocity', 80)
+            
+            if not song_data or not song_data.notes:
+                # Use default pattern if no notes provided
+                chord_notes = self.CHORD_NOTES.get(chord, self.CHORD_NOTES['C'])
+                for beat, duration in style_pattern['rhythm']:
+                    for note in chord_notes:
+                        pattern.append(self._create_note_event(note, beat, duration, base_velocity))
+            else:
+                # Use song data notes
+                for note_info in song_data.notes:
+                    try:
+                        # Get timing information
+                        time = note_info['time']
+                        duration = self._duration_to_beats(note_info['duration'])
+                        dynamic = note_info['dynamic']
+                        velocity = self._dynamic_to_velocity(dynamic)
+                        
+                        # Get note or chord
+                        note_str = note_info['note']
+                        if note_str.startswith('['):
+                            # For bass, we only want the lowest note of the chord
+                            chord_notes = note_str[1:-1].split(',')
+                            # Parse all notes and take the lowest one
+                            midi_notes = [self._parse_single_note(note.strip()) for note in chord_notes]
+                            note = min(midi_notes)
+                        else:
+                            note = self._parse_single_note(note_str)
+                        
+                        pattern.append(self._create_note_event(
+                            note,
+                            time,
+                            duration,
+                            velocity
+                        ))
+                    except Exception as e:
+                        print(f"Warning: Skipping invalid note event: {note_info}. Error: {str(e)}")
+                        continue
+            
+            return pattern
+            
+        except Exception as e:
+            print(f"Error generating bass pattern: {str(e)}")
+            # Return a simple pattern as fallback
+            return [(self.CHORD_NOTES['C'][0], 0, 1.0, 80)] 
