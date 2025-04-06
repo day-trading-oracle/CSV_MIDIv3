@@ -1,7 +1,0 @@
-Title: Jazz Waltz in F
-Tempo: 180
-Time Signature: 3/4
-Key: F major
-Genre: jazz
-
-# Measures will be generated automatically based on the key 

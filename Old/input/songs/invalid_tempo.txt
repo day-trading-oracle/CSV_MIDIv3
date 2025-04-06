@@ -1,5 +1,0 @@
-Title: Invalid Tempo Test
-Tempo: -120
-Time Signature: 4/4
-Key: C major
-Genre: classical 

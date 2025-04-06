@@ -1,3 +1,0 @@
-"""
-MusicMidi source package.
-""" 

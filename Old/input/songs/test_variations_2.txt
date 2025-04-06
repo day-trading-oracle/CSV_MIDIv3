@@ -1,7 +1,0 @@
-Title: Blues in A
-Tempo: 120
-Time Signature: 12/8
-Key: Am
-Genre: blues
-
-# Measures will be generated automatically based on the key 
